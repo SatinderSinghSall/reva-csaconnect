@@ -11,6 +11,7 @@ const PostCard = ({ post, refreshPosts }) => {
   const [likesCount, setLikesCount] = useState(post.likes.length);
   const [comments, setComments] = useState(post.comments);
   const [commentText, setCommentText] = useState("");
+  const [loadingComment, setLoadingComment] = useState(false);
 
   const handleLike = async () => {
     if (!token) return alert("Please login to like posts");
@@ -32,6 +33,7 @@ const PostCard = ({ post, refreshPosts }) => {
     if (!token) return alert("Please login to comment");
     if (!commentText.trim()) return;
 
+    setLoadingComment(true);
     try {
       const res = await axios.post(
         `https://csaconnect-backend.onrender.com/api/posts/${post._id}/comment`,
@@ -42,6 +44,8 @@ const PostCard = ({ post, refreshPosts }) => {
       setCommentText("");
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoadingComment(false);
     }
   };
 
@@ -70,15 +74,6 @@ const PostCard = ({ post, refreshPosts }) => {
         <p className="mb-5 text-gray-700 whitespace-pre-line leading-relaxed line-clamp-4">
           {post.content}
         </p>
-
-        {/* Image */}
-        {post.image && (
-          <img
-            src={post.image}
-            alt="Post"
-            className="rounded-lg w-full max-h-64 object-cover mb-6 shadow-sm border border-gray-200"
-          />
-        )}
       </Link>
 
       {/* Like & Comment Counts */}
@@ -159,10 +154,36 @@ const PostCard = ({ post, refreshPosts }) => {
         />
         <button
           type="submit"
-          disabled={!commentText.trim()}
-          className="bg-orange-500 text-white px-5 rounded-full font-semibold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          disabled={!commentText.trim() || loadingComment}
+          className="bg-orange-500 text-white px-5 rounded-full font-semibold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-2"
         >
-          Post
+          {loadingComment ? (
+            <>
+              <svg
+                className="animate-spin h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                ></path>
+              </svg>
+              Posting...
+            </>
+          ) : (
+            "Post"
+          )}
         </button>
       </form>
     </div>
