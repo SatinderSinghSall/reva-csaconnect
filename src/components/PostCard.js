@@ -34,7 +34,7 @@ const PostCard = ({ post, refreshPosts }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/posts/${post._id}/comment`,
+        `https://csaconnect-backend.onrender.com/api/posts/${post._id}/comment`,
         { text: commentText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
