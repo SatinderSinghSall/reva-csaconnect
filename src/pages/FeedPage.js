@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { PlusIcon, UserCircle } from "lucide-react";
+
 import PostCard from "../components/PostCard";
+import { AuthContext } from "../context/AuthContext";
 
 const FeedPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get("https://csaconnect-backend.onrender.com/api/posts");
+      const res = await axios.get(
+        "https://csaconnect-backend.onrender.com/api/posts"
+      );
       setPosts(res.data);
-      setLoading(false);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch posts:", err);
+    } finally {
       setLoading(false);
     }
   };
@@ -23,31 +29,52 @@ const FeedPage = () => {
     fetchPosts();
   }, []);
 
-  if (loading) return <div className="text-center mt-10">Loading posts...</div>;
-
   return (
-    <div className="max-w-6xl mx-auto mt-10 px-4">
-      {/* Show Your Work Button */}
-      <div className="flex justify-end mb-6">
-        <button
-          onClick={() => navigate("/create-post")}
-          className="bg-blue-600 text-white px-6 py-2 rounded-2xl shadow-md hover:bg-blue-700 transition duration-200"
-        >
-          Show your Work
-        </button>
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Community Feed
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Discover and share what everyone’s working on.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
+          <UserCircle className="w-6 h-6 text-blue-600" />
+          Welcome,{" "}
+          <span className="font-semibold">
+            {user?.name?.split(" ")[0] || "User"}
+          </span>
+        </div>
       </div>
 
-      {/* Posts Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {posts.length === 0 && (
-          <div className="text-gray-500 text-center col-span-full">
-            No posts available.
-          </div>
-        )}
-        {posts.map((post) => (
-          <PostCard key={post._id} post={post} refreshPosts={fetchPosts} />
-        ))}
-      </div>
+      {/* Content Area */}
+      {loading ? (
+        <div className="text-center text-gray-500 py-20 text-base sm:text-lg animate-pulse">
+          Loading posts...
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="text-center text-gray-400 text-lg mt-20">
+          No posts yet. Be the first to share your work!
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+          {posts.map((post) => (
+            <PostCard key={post._id} post={post} refreshPosts={fetchPosts} />
+          ))}
+        </div>
+      )}
+
+      {/* Fixed Floating Action Button */}
+      <button
+        onClick={() => navigate("/create-post")}
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-full shadow-xl transition-all duration-200"
+      >
+        <PlusIcon className="w-5 h-5" />
+        <span className="hidden sm:inline text-sm">Show your Work</span>
+      </button>
     </div>
   );
 };

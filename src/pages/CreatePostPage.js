@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { AuthContext } from "../context/AuthContext";
 
 const CreatePostPage = () => {
@@ -21,9 +23,8 @@ const CreatePostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!form.title || !form.content) {
-      return alert("Title and content are required.");
+      return toast.error("Title and content are required.");
     }
 
     try {
@@ -38,6 +39,7 @@ const CreatePostPage = () => {
           },
         }
       );
+      toast.success("Post added successfully!");
       navigate("/feed");
     } catch (err) {
       console.error(err);
@@ -48,40 +50,57 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-        ✍️ Create New Post
-      </h2>
+    <div className="max-w-3xl mx-auto mt-12 px-4">
+      <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10">
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-6">
+          ✍️ Create a New Post
+        </h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md space-y-4"
-      >
-        <input
-          type="text"
-          name="title"
-          placeholder="Post Title"
-          className="w-full border px-4 py-2 rounded-md focus:ring-2 focus:ring-orange-400"
-          value={form.title}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Post Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              placeholder="Give your post a great title..."
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+            />
+          </div>
 
-        <textarea
-          name="content"
-          placeholder="Share your achievement, project or update..."
-          className="w-full border px-4 py-2 rounded-md h-40 resize-none focus:ring-2 focus:ring-orange-400"
-          value={form.content}
-          onChange={handleChange}
-        ></textarea>
+          <div>
+            <label
+              htmlFor="content"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Post Content
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              value={form.content}
+              onChange={handleChange}
+              placeholder="Share what you’ve built, learned, or accomplished..."
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm h-40 resize-none focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+            />
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition disabled:opacity-50"
-        >
-          {loading ? "Posting..." : "Share Post"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-lg font-semibold py-3 rounded-lg shadow-md transition disabled:opacity-50"
+          >
+            {loading ? "Posting..." : "🚀 Share Post"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

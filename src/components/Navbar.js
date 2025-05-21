@@ -1,13 +1,21 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const linkClass = (path) =>
+    `transition ${
+      location.pathname === path
+        ? "text-orange-400 font-semibold"
+        : "hover:text-orange-400"
+    }`;
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 shadow-md">
@@ -27,22 +35,19 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-6">
           <li>
-            <Link to="/" className="hover:text-orange-400 transition">
+            <Link to="/" className={linkClass("/")}>
               Home
             </Link>
           </li>
           {!user ? (
             <>
               <li>
-                <Link to="/login" className="hover:text-orange-400 transition">
+                <Link to="/login" className={linkClass("/login")}>
                   Login
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/register"
-                  className="hover:text-orange-400 transition"
-                >
+                <Link to="/register" className={linkClass("/register")}>
                   Register
                 </Link>
               </li>
@@ -50,15 +55,12 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link
-                  to="/dashboard"
-                  className="hover:text-orange-400 transition"
-                >
+                <Link to="/dashboard" className={linkClass("/dashboard")}>
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/feed" className="hover:text-orange-400 transition">
+                <Link to="/feed" className={linkClass("/feed")}>
                   My Feed
                 </Link>
               </li>
@@ -66,7 +68,7 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     logout();
-                    setIsOpen(false); // close mobile menu on logout
+                    setIsOpen(false);
                   }}
                   className="hover:text-red-400 transition"
                 >
@@ -82,11 +84,7 @@ const Navbar = () => {
       {isOpen && (
         <ul className="mt-4 flex flex-col gap-4 md:hidden">
           <li>
-            <Link
-              to="/"
-              className="hover:text-orange-400 transition"
-              onClick={toggleMenu}
-            >
+            <Link to="/" className={linkClass("/")} onClick={toggleMenu}>
               Home
             </Link>
           </li>
@@ -95,7 +93,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/login"
-                  className="hover:text-orange-400 transition"
+                  className={linkClass("/login")}
                   onClick={toggleMenu}
                 >
                   Login
@@ -104,7 +102,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/register"
-                  className="hover:text-orange-400 transition"
+                  className={linkClass("/register")}
                   onClick={toggleMenu}
                 >
                   Register
@@ -116,7 +114,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/dashboard"
-                  className="hover:text-orange-400 transition"
+                  className={linkClass("/dashboard")}
                   onClick={toggleMenu}
                 >
                   Dashboard
@@ -125,7 +123,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/feed"
-                  className="hover:text-orange-400 transition"
+                  className={linkClass("/feed")}
                   onClick={toggleMenu}
                 >
                   My Feed
@@ -135,7 +133,7 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     logout();
-                    toggleMenu(); // close menu after logout
+                    toggleMenu();
                   }}
                   className="hover:text-red-400 transition"
                 >
