@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { AuthContext } from "../context/AuthContext";
 import API from "../api/axios";
@@ -23,8 +24,10 @@ const LoginPage = () => {
     try {
       const res = await API.post("/auth/login", formData);
       login(res.data.user, res.data.token);
+      toast.success("Login Successful!");
       navigate("/feed");
     } catch (err) {
+      toast.error("Login Failed!");
       setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);

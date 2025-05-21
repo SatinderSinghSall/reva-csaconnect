@@ -121,10 +121,13 @@ const LandingPage = () => {
           transition={{ delay: 1, duration: 0.7 }}
           className="inline-flex gap-6"
         >
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300">
+          <button
+            onClick={() => {navigate("/login")}}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"
+          >
             Login
           </button>
-          <button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-700">
+          <button onClick={() => navigate("/register")} className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-700">
             Register
           </button>
         </motion.div>

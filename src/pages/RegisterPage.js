@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import API from "../api/axios";
 
 const RegisterPage = () => {
@@ -23,8 +25,10 @@ const RegisterPage = () => {
 
     try {
       await API.post("/auth/register", formData);
+      toast.success("Registration Successful!");
       navigate("/login");
     } catch (err) {
+      toast.error("Registration Failed!");
       setError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);

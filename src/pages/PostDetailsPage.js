@@ -9,7 +9,9 @@ const PostDetailsPage = () => {
 
   const fetchPostDetails = async () => {
     try {
-      const res = await axios.get(`https://csaconnect-backend.onrender.com/api/posts/${postId}`);
+      const res = await axios.get(
+        `https://csaconnect-backend.onrender.com/api/posts/${postId}`
+      );
       setPost(res.data);
     } catch (error) {
       console.error("Failed to fetch post:", error);
