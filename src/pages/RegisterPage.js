@@ -54,7 +54,7 @@ const RegisterPage = () => {
         </h2>
         <p className="text-center text-gray-600 text-lg mb-6">
           Join{" "}
-          <span className="font-semibold text-orange-500">REVAConnect</span> and
+          <span className="font-semibold text-orange-500">CSAConnect</span> and
           start connecting.
         </p>
 

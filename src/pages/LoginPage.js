@@ -53,7 +53,7 @@ const LoginPage = () => {
         </h2>
         <p className="text-center text-gray-600 text-lg mb-6">
           Login to{" "}
-          <span className="font-semibold text-orange-500">REVAConnect</span>
+          <span className="font-semibold text-orange-500">CSAConnect</span>
         </p>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
