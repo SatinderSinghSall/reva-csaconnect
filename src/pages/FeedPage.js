@@ -9,6 +9,8 @@ import { AuthContext } from "../context/AuthContext";
 const FeedPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -28,6 +30,13 @@ const FeedPage = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  //! Filter posts based on search query (case-insensitive)
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.content?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
@@ -50,24 +59,35 @@ const FeedPage = () => {
         </div>
       </div>
 
+      {/* Search Bar */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search posts..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full sm:max-w-md px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+        />
+      </div>
+
       {/* Content Area */}
       {loading ? (
         <div className="text-center text-gray-500 py-20 text-base sm:text-lg animate-pulse">
           Loading posts...
         </div>
-      ) : posts.length === 0 ? (
+      ) : filteredPosts.length === 0 ? (
         <div className="text-center text-gray-400 text-lg mt-20">
-          No posts yet. Be the first to share your work!
+          No matching posts found.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <PostCard key={post._id} post={post} refreshPosts={fetchPosts} />
           ))}
         </div>
       )}
 
-      {/* Fixed Floating Action Button */}
+      {/* Floating Action Button */}
       <button
         onClick={() => navigate("/create-post")}
         className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-full shadow-xl transition-all duration-200"
