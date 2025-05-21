@@ -36,44 +36,87 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+    <div className="relative min-h-screen flex items-center justify-center px-4 bg-gray-900 overflow-hidden">
+      {/* Background Image */}
+      <img
+        src="/images/bg_image.jpg"
+        alt="Background"
+        className="absolute inset-0 w-full h-full object-cover blur-md brightness-75 z-0"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-40 z-0" />
+
+      {/* Registration Form Card */}
+      <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10">
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-2">
           Create an Account
         </h2>
+        <p className="text-center text-gray-600 text-lg mb-6">
+          Join{" "}
+          <span className="font-semibold text-orange-500">REVAConnect</span> and
+          start connecting.
+        </p>
+
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            type="text"
-            placeholder="Full Name"
-            className="w-full border rounded-lg px-4 py-2"
-            disabled={loading}
-          />
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            type="email"
-            placeholder="Email"
-            className="w-full border rounded-lg px-4 py-2"
-            disabled={loading}
-          />
-          <input
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            type="password"
-            placeholder="Password"
-            className="w-full border rounded-lg px-4 py-2"
-            disabled={loading}
-          />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Full Name
+            </label>
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              type="text"
+              placeholder="John Doe"
+              className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none px-4 py-2 text-gray-800"
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
+            <input
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              type="email"
+              placeholder="you@example.com"
+              className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none px-4 py-2 text-gray-800"
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Password
+            </label>
+            <input
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              type="password"
+              placeholder="••••••••"
+              className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none px-4 py-2 text-gray-800"
+              disabled={loading}
+            />
+          </div>
+
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg flex justify-center items-center gap-2"
+            className="w-full bg-orange-500 hover:bg-orange-600 transition duration-200 text-white font-semibold py-2.5 rounded-lg flex justify-center items-center gap-2"
           >
             {loading ? (
               <>
@@ -104,7 +147,8 @@ const RegisterPage = () => {
             )}
           </button>
         </form>
-        <p className="text-sm text-center mt-6">
+
+        <p className="text-sm text-center mt-6 text-gray-700">
           Already have an account?{" "}
           <Link to="/login" className="text-orange-500 hover:underline">
             Login here
