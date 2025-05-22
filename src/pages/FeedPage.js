@@ -32,11 +32,14 @@ const FeedPage = () => {
   }, []);
 
   //! Filter posts based on search query (case-insensitive)
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.content?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPosts = posts.filter((post) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      post.title?.toLowerCase().includes(query) ||
+      post.content?.toLowerCase().includes(query) ||
+      post.author?.name?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
@@ -60,14 +63,28 @@ const FeedPage = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="mb-6">
+      <div className="mb-9 relative w-full sm:max-w-md">
         <input
           type="text"
-          placeholder="Search posts..."
+          placeholder="Search posts & users..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:max-w-md px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+          className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm placeholder-gray-500 text-sm"
         />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2.85a7.5 7.5 0 010 13.8z"
+          />
+        </svg>
       </div>
 
       {/* Content Area */}
