@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { X, Sparkles } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -69,6 +71,28 @@ const PostDetailsPage = () => {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const comingSoon = () => {
+    toast((t) => (
+      <div className="flex items-start gap-3 p-4 bg-orange-50 border border-orange-200 rounded-xl shadow-md w-full max-w-sm">
+        <div className="p-2 bg-orange-100 text-orange-600 rounded-full">
+          <Sparkles className="w-5 h-5" />
+        </div>
+        <div className="flex-1 text-sm text-orange-900">
+          <div className="font-semibold">Feature Coming Soon</div>
+          <div className="text-xs text-orange-700">
+            We're working hard to bring this to you!
+          </div>
+        </div>
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          className="text-orange-400 hover:text-orange-600 transition"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+    ));
   };
 
   useEffect(() => {
@@ -224,28 +248,48 @@ const PostDetailsPage = () => {
 
       {/* Comments Section */}
       <div className="bg-white mt-8 rounded-2xl shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-gray-900 mb-5">
           Comments ({post.comments.length})
         </h2>
+
         {post.comments.length === 0 ? (
-          <p className="text-gray-500 italic">No comments yet.</p>
+          <p className="text-gray-500 italic text-sm">No comments yet.</p>
         ) : (
-          <ul className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+          <ul className="space-y-6 max-h-[500px] overflow-y-auto pr-1">
             {post.comments.map((comment) => (
-              <li key={comment._id} className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-orange-400 text-white flex items-center justify-center font-semibold">
+              <li key={comment._id} className="flex items-start gap-3">
+                {/* Avatar */}
+                <div className="w-10 h-10 flex-shrink-0 rounded-full bg-orange-400 text-white flex items-center justify-center font-semibold text-sm">
                   {comment.user.name.charAt(0)}
                 </div>
-                <div className="bg-gray-100 rounded-xl p-4 w-full">
+
+                {/* Comment Bubble */}
+                <div className="flex-1 bg-gray-50 p-4 rounded-xl shadow-sm">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-gray-900 text-sm">
+                    <span className="font-medium text-gray-900 text-sm">
                       {comment.user.name}
                     </span>
-                    <span className="text-xs text-gray-500">
-                      {new Date(comment.createdAt).toLocaleDateString()}
+                    <span className="text-xs text-gray-400">
+                      {formatDistanceToNow(new Date(comment.createdAt), {
+                        addSuffix: true,
+                      })}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-800">{comment.text}</p>
+                  <p className="text-gray-800 text-sm mb-2">{comment.text}</p>
+                  <div className="flex gap-4 text-xs text-gray-500 font-medium mt-1">
+                    <button
+                      onClick={comingSoon}
+                      className="hover:text-orange-500 transition"
+                    >
+                      Like
+                    </button>
+                    <button
+                      onClick={comingSoon}
+                      className="hover:text-orange-500 transition"
+                    >
+                      Reply
+                    </button>
+                  </div>
                 </div>
               </li>
             ))}
@@ -285,7 +329,6 @@ const PostDetailsPage = () => {
         </div>
       )}
 
-      {/* Likes Modal */}
       {/* Likes Modal */}
       {showLikesModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
