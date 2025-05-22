@@ -120,16 +120,33 @@ const PostCard = ({ post, refreshPosts }) => {
             No comments yet
           </p>
         )}
-
         {comments.slice(0, 2).map((comment, idx) => (
           <div
             key={idx}
-            className="mb-2 px-3 py-1 rounded-md bg-gray-50 hover:bg-orange-50 transition text-sm"
+            className="flex items-start gap-3 mb-3 bg-gray-50 hover:bg-orange-50 rounded-lg px-4 py-3 transition"
           >
-            <span className="font-semibold text-orange-600">
-              {comment.user?.name || "User"}:
-            </span>{" "}
-            <span className="text-gray-700">{comment.text}</span>
+            {/* Avatar */}
+            <div className="flex-shrink-0">
+              <div className="h-8 w-8 rounded-full bg-orange-200 text-orange-800 flex items-center justify-center font-bold text-sm">
+                {comment.user?.name?.[0]?.toUpperCase() || "U"}
+              </div>
+            </div>
+
+            {/* Comment Content */}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-semibold text-gray-800 text-sm">
+                  {comment.user?.name || "User"}
+                </span>
+                <span className="text-xs text-gray-400">
+                  {new Date(comment.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+              <p className="text-gray-700 text-sm">{comment.text}</p>
+            </div>
           </div>
         ))}
 
