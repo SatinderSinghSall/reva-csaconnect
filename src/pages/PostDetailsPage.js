@@ -122,7 +122,7 @@ const PostDetailsPage = () => {
         {/* Author Info Header */}
         <div className="flex items-center gap-4 px-6 py-5 border-b border-gray-100">
           <div className="w-14 h-14 rounded-full bg-orange-500 flex items-center justify-center text-white text-xl font-bold">
-            {post.author.name.charAt(0)}
+            {post.author?.name ? post.author.name.charAt(0) : "?"}
           </div>
           <div>
             <div className="text-sm font-semibold text-gray-900">
@@ -232,7 +232,7 @@ const PostDetailsPage = () => {
                     className="w-8 h-8 rounded-full bg-orange-400 text-white flex items-center justify-center text-xs font-semibold ring-2 ring-white shadow-sm"
                     title={user.name}
                   >
-                    {user.name.charAt(0)}
+                    {user?.name ? user.name.charAt(0) : "?"}
                   </div>
                 ))}
                 {post.likes.length > 3 && (
@@ -260,7 +260,7 @@ const PostDetailsPage = () => {
               <li key={comment._id} className="flex items-start gap-3">
                 {/* Avatar */}
                 <div className="w-10 h-10 flex-shrink-0 rounded-full bg-orange-400 text-white flex items-center justify-center font-semibold text-sm">
-                  {comment.user.name.charAt(0)}
+                  {comment.user?.name ? comment.user.name.charAt(0) : "?"}
                 </div>
 
                 {/* Comment Bubble */}
