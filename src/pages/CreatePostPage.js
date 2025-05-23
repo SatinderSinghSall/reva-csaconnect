@@ -51,8 +51,8 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-12 px-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10">
+    <div className="max-w-3xl mx-auto mt-12 mb-12 px-4">
+      <div className="bg-white border-2 border-solid rounded-2xl shadow-lg p-8 sm:p-10">
         <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-6">
           ✍️ Create a New Post
         </h2>
