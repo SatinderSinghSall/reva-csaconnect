@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { X, Sparkles } from "lucide-react";
+import { X, Sparkles, Zap } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -196,6 +196,28 @@ const PostDetailsPage = () => {
               <p className="text-gray-800 whitespace-pre-line">
                 {post.content}
               </p>
+
+              {/* Skills Tags */}
+              {Array.isArray(post.skills) && post.skills.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wide">
+                    Skills & Tools:
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {post.skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm 
+                     hover:bg-orange-100 hover:text-orange-600 transition-colors duration-300 ease-in-out cursor-default"
+                        title={skill}
+                      >
+                        <Zap className="w-4 h-4" />
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

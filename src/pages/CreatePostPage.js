@@ -12,6 +12,7 @@ const CreatePostPage = () => {
   const [form, setForm] = useState({
     title: "",
     content: "",
+    skills: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ const CreatePostPage = () => {
       setLoading(true);
       await axios.post(
         "https://csaconnect-backend.onrender.com/api/posts",
-        { title: form.title, content: form.content },
+        { title: form.title, content: form.content, skills: form.skills },
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,6 +90,24 @@ const CreatePostPage = () => {
               onChange={handleChange}
               placeholder="Share what you’ve built, learned, or accomplished..."
               className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm h-40 resize-none focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="skills"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Skills Learned (Optional)
+            </label>
+            <input
+              id="skills"
+              type="text"
+              name="skills"
+              value={form.skills}
+              onChange={handleChange}
+              placeholder="e.g., React, Node.js, MongoDB"
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
             />
           </div>
 
