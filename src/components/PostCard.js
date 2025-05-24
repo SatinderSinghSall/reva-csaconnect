@@ -12,9 +12,11 @@ const PostCard = ({ post, refreshPosts }) => {
   const [comments, setComments] = useState(post.comments);
   const [commentText, setCommentText] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
+  const [loadingLike, setLoadingLike] = useState(false);
 
   const handleLike = async () => {
     if (!token) return alert("Please login to like posts");
+    setLoadingLike(true);
     try {
       await axios.post(
         `https://csaconnect-backend.onrender.com/api/posts/${post._id}/like`,
@@ -25,6 +27,8 @@ const PostCard = ({ post, refreshPosts }) => {
       setLikesCount(liked ? likesCount - 1 : likesCount + 1);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoadingLike(false);
     }
   };
 
@@ -80,19 +84,43 @@ const PostCard = ({ post, refreshPosts }) => {
       <div className="flex items-center gap-6 mb-5 text-gray-600 flex-wrap">
         <button
           onClick={handleLike}
+          disabled={loadingLike}
           className={`flex items-center gap-2 text-lg font-semibold transition-colors ${
             liked ? "text-orange-500" : "hover:text-orange-400 text-gray-500"
-          }`}
+          } ${loadingLike ? "cursor-wait" : "cursor-pointer"}`}
           aria-label={liked ? "Unlike" : "Like"}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 fill-current"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-          {likesCount}
+          {loadingLike ? (
+            <svg
+              className="animate-spin h-6 w-6 text-orange-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              ></path>
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 fill-current"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+          )}
+          {!loadingLike && likesCount}
         </button>
         <div className="text-lg font-semibold flex items-center gap-2">
           <svg
