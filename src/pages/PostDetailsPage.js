@@ -218,6 +218,23 @@ const PostDetailsPage = () => {
                   </div>
                 </div>
               )}
+
+              {/* External Link */}
+              {post.link && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2 uppercase tracking-wide">
+                    Project Link:
+                  </h3>
+                  <a
+                    href={post.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-orange-600 hover:text-orange-800 font-medium underline break-all"
+                  >
+                    {post.link}
+                  </a>
+                </div>
+              )}
             </>
           )}
         </div>

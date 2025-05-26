@@ -13,6 +13,7 @@ const CreatePostPage = () => {
     title: "",
     content: "",
     skills: "",
+    link: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,12 @@ const CreatePostPage = () => {
       setLoading(true);
       await axios.post(
         "https://csaconnect-backend.onrender.com/api/posts",
-        { title: form.title, content: form.content, skills: form.skills },
+        {
+          title: form.title,
+          content: form.content,
+          skills: form.skills,
+          link: form.link,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -107,6 +113,24 @@ const CreatePostPage = () => {
               value={form.skills}
               onChange={handleChange}
               placeholder="e.g., React, Node.js, MongoDB"
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="link"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Project Link or Reference (Optional)
+            </label>
+            <input
+              id="link"
+              type="url"
+              name="link"
+              value={form.link}
+              onChange={handleChange}
+              placeholder="https://yourproject.com"
               className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
             />
           </div>
