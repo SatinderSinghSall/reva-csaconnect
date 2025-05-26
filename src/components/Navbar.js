@@ -39,6 +39,16 @@ const Navbar = () => {
               Home
             </Link>
           </li>
+          <li>
+            <a
+              href="https://reva-csaconnect-admin.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-orange-400 transition"
+            >
+              Admin
+            </a>
+          </li>
           {!user ? (
             <>
               <li>
@@ -87,6 +97,17 @@ const Navbar = () => {
             <Link to="/" className={linkClass("/")} onClick={toggleMenu}>
               Home
             </Link>
+          </li>
+          <li>
+            <a
+              href="https://reva-csaconnect-admin.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-orange-400 transition"
+              onClick={toggleMenu}
+            >
+              Admin
+            </a>
           </li>
           {!user ? (
             <>
