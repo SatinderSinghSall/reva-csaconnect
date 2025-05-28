@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api/axios";
 import {
-  HammerIcon,
+  FilePlusIcon,
   FileTextIcon,
   MessageCircleIcon,
   ThumbsUpIcon,
@@ -86,7 +86,7 @@ const DashboardPage = () => {
           <p className="text-red-500">{error}</p>
         ) : posts.length === 0 ? (
           <div className="text-center text-gray-600 p-6 bg-gray-100 rounded-xl">
-            <HammerIcon className="w-8 h-8 mx-auto text-yellow-500 animate-bounce mb-2" />
+            <FilePlusIcon className="w-8 h-8 mx-auto text-yellow-500 animate-bounce mb-2" />
             <p>No posts yet. Start creating!</p>
           </div>
         ) : (
