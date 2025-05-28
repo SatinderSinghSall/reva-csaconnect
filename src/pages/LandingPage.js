@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import InspirationCard from "../components/InspirationCard";
+import Peoples from "../components/Peoples";
 
 const features = [
   {
@@ -139,6 +140,8 @@ const LandingPage = () => {
           </button>
         </motion.div>
       </section>
+
+      <Peoples />
 
       <InspirationCard />
 
