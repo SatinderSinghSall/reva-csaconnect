@@ -7,6 +7,7 @@ import "../src/App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Quiz from "./components/Quiz";
 
 import AuthProvider from "./context/AuthContext";
 
@@ -63,6 +64,15 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <PostDetailsPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/quiz"
+                  element={
+                    <ProtectedRoute>
+                      <Quiz />
                     </ProtectedRoute>
                   }
                 />

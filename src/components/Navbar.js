@@ -70,6 +70,11 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/quiz" className={linkClass("/quiz")}>
+                  Quiz
+                </Link>
+              </li>
+              <li>
                 <Link to="/feed" className={linkClass("/feed")}>
                   My Feed
                 </Link>
@@ -139,6 +144,15 @@ const Navbar = () => {
                   onClick={toggleMenu}
                 >
                   Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/quiz"
+                  className={linkClass("/quiz")}
+                  onClick={toggleMenu}
+                >
+                  Quiz
                 </Link>
               </li>
               <li>
