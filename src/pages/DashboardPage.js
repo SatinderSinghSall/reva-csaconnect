@@ -36,52 +36,64 @@ const DashboardPage = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto p-6 mt-20">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
-        Welcome back, {user?.name?.split(" ")[0] || "User"}!
+    <div className="max-w-6xl mx-auto px-6 py-12">
+      <h1 className="text-4xl font-bold text-gray-900 mb-8">
+        Welcome back,{" "}
+        <span className="text-orange-500">
+          {user?.name?.split(" ")[0] || "User"}
+        </span>
+        !
       </h1>
 
-      {/* User Info */}
-      <div className="bg-white rounded-xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-1">
+      {/* Info & Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        {/* Profile Info */}
+        <div className="col-span-1 bg-white shadow-md rounded-2xl p-6 border border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
             Your Info
           </h2>
-          <p>
-            <span className="font-medium text-gray-700">Name:</span>{" "}
-            {user?.name}
+          <p className="text-sm text-gray-600 mb-2">
+            <span className="font-medium">Name:</span> {user?.name}
           </p>
-          <p>
-            <span className="font-medium text-gray-700">Email:</span>{" "}
-            {user?.email}
+          <p className="text-sm text-gray-600">
+            <span className="font-medium">Email:</span> {user?.email}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+
+        {/* Stats */}
+        <div className="col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
-            icon={<FileTextIcon />}
+            icon={<FileTextIcon className="w-6 h-6" />}
             label="Posts"
             value={posts.length}
           />
           <StatCard
-            icon={<ThumbsUpIcon />}
-            label="Total Likes"
+            icon={<ThumbsUpIcon className="w-6 h-6" />}
+            label="Likes"
             value={totalLikes}
           />
           <StatCard
-            icon={<MessageCircleIcon />}
-            label="Total Comments"
+            icon={<MessageCircleIcon className="w-6 h-6" />}
+            label="Comments"
             value={totalComments}
           />
         </div>
       </div>
 
-      {/* Posts List */}
+      {/* User Posts */}
       <div>
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">
           Your Posts
         </h2>
         {loading ? (
-          <p className="text-gray-600">Loading your posts...</p>
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="animate-pulse h-24 bg-gray-100 rounded-lg"
+              ></div>
+            ))}
+          </div>
         ) : error ? (
           <p className="text-red-500">{error}</p>
         ) : posts.length === 0 ? (
@@ -90,24 +102,24 @@ const DashboardPage = () => {
             <p>No posts yet. Start creating!</p>
           </div>
         ) : (
-          <ul className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {posts.map((post) => (
-              <li
+              <div
                 key={post._id}
-                className="p-4 bg-white shadow rounded-lg border border-gray-100"
+                className="bg-white border border-gray-100 p-5 rounded-xl shadow-sm hover:shadow-md transition"
               >
                 <h3 className="text-lg font-semibold text-gray-800">
                   {post.title}
                 </h3>
-                <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                <p className="text-sm text-gray-600 mt-2 line-clamp-3">
                   {post.content}
                 </p>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 mt-3">
                   {post.likes.length} Likes • {post.comments.length} Comments
                 </p>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
@@ -115,10 +127,12 @@ const DashboardPage = () => {
 };
 
 const StatCard = ({ icon, label, value }) => (
-  <div className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border">
-    <div className="text-orange-500">{icon}</div>
-    <div className="text-xl font-bold text-gray-800 mt-1">{value}</div>
-    <div className="text-sm text-gray-600">{label}</div>
+  <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow border hover:shadow-md transition">
+    <div className="p-2 rounded-full bg-orange-100 text-orange-500">{icon}</div>
+    <div>
+      <div className="text-xl font-bold text-gray-900">{value}</div>
+      <div className="text-sm text-gray-600">{label}</div>
+    </div>
   </div>
 );
 
