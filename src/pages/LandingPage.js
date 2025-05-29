@@ -97,6 +97,31 @@ const LandingPage = () => {
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex items-center justify-center gap-8 mb-8 flex-wrap cursor-default select-none"
+        >
+          <motion.img
+            src="/images/reva_logo.png"
+            alt="REVA University"
+            className="w-44 md:w-56 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+            whileHover={{ scale: 1.1 }}
+            drag={false}
+          />
+          <motion.p
+            className="text-xl md:text-2xl font-extrabold text-orange-600 uppercase tracking-wide select-text"
+            initial={{ scale: 0.95 }}
+            whileHover={{
+              scale: 1.05,
+              textShadow: "0 0 10px rgba(251,146,60,0.7)",
+            }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            School of CSA
+          </motion.p>
+        </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
