@@ -168,7 +168,7 @@ const LandingPage = () => {
 
       <Peoples />
 
-      <InspirationCard />
+      {/* <InspirationCard /> */}
 
       {/* How It Works */}
       <section className="max-w-6xl mx-auto mt-24">
