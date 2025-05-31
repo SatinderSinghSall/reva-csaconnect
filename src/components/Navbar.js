@@ -65,13 +65,13 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link to="/dashboard" className={linkClass("/dashboard")}>
-                  Dashboard
+                <Link to="/quiz" className={linkClass("/quiz")}>
+                  Quiz
                 </Link>
               </li>
               <li>
-                <Link to="/quiz" className={linkClass("/quiz")}>
-                  Quiz
+                <Link to="/dashboard" className={linkClass("/dashboard")}>
+                  Dashboard
                 </Link>
               </li>
               <li>
@@ -139,20 +139,20 @@ const Navbar = () => {
             <>
               <li>
                 <Link
-                  to="/dashboard"
-                  className={linkClass("/dashboard")}
-                  onClick={toggleMenu}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/quiz"
                   className={linkClass("/quiz")}
                   onClick={toggleMenu}
                 >
                   Quiz
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard"
+                  className={linkClass("/dashboard")}
+                  onClick={toggleMenu}
+                >
+                  Dashboard
                 </Link>
               </li>
               <li>

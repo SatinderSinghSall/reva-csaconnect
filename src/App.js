@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Quiz from "./components/Quiz";
+import DeveloperCredit from "./components/DeveloperCredit";
 
 import AuthProvider from "./context/AuthContext";
 
@@ -78,6 +79,7 @@ function App() {
                 />
               </Routes>
             </main>
+            <DeveloperCredit />
             <Footer />
           </div>
         </AuthProvider>
