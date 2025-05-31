@@ -21,6 +21,7 @@ const Quiz = () => {
           We’re actively building this feature to give you the best experience.
           Stay tuned — it’s coming soon!
         </p>
+        <p>Developer - Satinder Singh Sall</p>
       </div>
     </div>
   );
