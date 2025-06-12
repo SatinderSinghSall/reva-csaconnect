@@ -197,6 +197,15 @@ const PostDetailsPage = () => {
                 {post.content}
               </p>
 
+              {/* Conditionally render image if exists */}
+              {post.image && (
+                <img
+                  src={post.image}
+                  alt="Post visual"
+                  className="mb-4 w-full rounded-lg shadow-md object-cover max-h-[500px]"
+                />
+              )}
+
               {/* Skills Tags */}
               {Array.isArray(post.skills) && post.skills.length > 0 && (
                 <div className="mt-6">

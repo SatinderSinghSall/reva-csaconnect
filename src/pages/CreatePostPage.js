@@ -8,15 +8,14 @@ import { AuthContext } from "../context/AuthContext";
 const CreatePostPage = () => {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     title: "",
     content: "",
     skills: "",
     link: "",
   });
-
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,25 +30,31 @@ const CreatePostPage = () => {
 
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("content", form.content);
+      formData.append("skills", form.skills);
+      formData.append("link", form.link);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
       await axios.post(
         "https://csaconnect-backend.onrender.com/api/posts",
-        {
-          title: form.title,
-          content: form.content,
-          skills: form.skills,
-          link: form.link,
-        },
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
       );
+
       toast.success("Post added successfully!");
       navigate("/feed");
     } catch (err) {
-      console.error(err);
+      console.error("Error posting:", err);
       alert("Failed to post.");
     } finally {
       setLoading(false);
@@ -132,6 +137,22 @@ const CreatePostPage = () => {
               onChange={handleChange}
               placeholder="https://yourproject.com"
               className="w-full border border-gray-300 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Upload Image (Optional)
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              className="w-full border border-gray-300 px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition bg-white"
             />
           </div>
 
