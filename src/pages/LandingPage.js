@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import InspirationCard from "../components/InspirationCard";
 import Peoples from "../components/Peoples";
+import DevelopmentNotice from "../components/DevelopmentNotice";
 
 const features = [
   {
@@ -192,6 +193,8 @@ const LandingPage = () => {
       </section>
 
       <InspirationCard />
+
+      <DevelopmentNotice />
 
       {/* Features Section */}
       <section className="mt-24 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-left relative z-10">

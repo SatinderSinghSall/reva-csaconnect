@@ -3,7 +3,7 @@ import { Mail } from "lucide-react";
 
 const InspirationCard = () => {
   return (
-    <div className="max-w-6xl mx-auto mt-16 px-4 sm:px-6">
+    <div className="max-w-6xl mb-14 mx-auto mt-16 px-4 sm:px-6">
       <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-10">
         🌟 Vision Behind <span className="text-indigo-600">CSAConnect</span>
       </h2>
