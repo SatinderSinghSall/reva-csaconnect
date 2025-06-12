@@ -202,7 +202,7 @@ const PostDetailsPage = () => {
                 <img
                   src={post.image}
                   alt="Post visual"
-                  className="mb-4 w-full rounded-lg shadow-md object-cover max-h-[500px]"
+                  className="mb-4 mt-4 w-full rounded-lg shadow-md object-cover max-h-[500px]"
                 />
               )}
 
