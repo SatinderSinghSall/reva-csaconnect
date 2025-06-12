@@ -53,9 +53,8 @@ const RegisterPage = () => {
           Create an Account
         </h2>
         <p className="text-center text-gray-600 text-lg mb-6">
-          Join{" "}
-          <span className="font-semibold text-orange-500">CSAConnect</span> and
-          start connecting.
+          Join <span className="font-semibold text-orange-500">CSAConnect</span>{" "}
+          and start connecting.
         </p>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
