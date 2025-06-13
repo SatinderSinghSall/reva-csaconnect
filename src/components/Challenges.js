@@ -49,7 +49,7 @@ const Challenges = () => {
               </h2>
 
               <p className="text-sm text-gray-500 mb-1">
-                Posted by:{" "}
+                Posted by an Admin:{" "}
                 <span className="font-medium text-gray-700">
                   {challenge.postedBy?.name || "Unknown"}
                 </span>
