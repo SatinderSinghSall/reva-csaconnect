@@ -24,9 +24,9 @@ const Challenges = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-8 px-4 sm:px-6 md:px-10">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
-        🚀 Posted Challenges / Opportunities
+    <div className="min-h-screen bg-gradient-to-br from-white to-blue-50 py-10 px-4 sm:px-6 lg:px-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 text-center">
+        🚀 Posted Challenges & Opportunities
       </h1>
 
       {loading ? (
@@ -34,39 +34,43 @@ const Challenges = () => {
           <Loader2 className="animate-spin text-blue-600 w-8 h-8" />
         </div>
       ) : challenges.length === 0 ? (
-        <p className="text-center text-gray-500 text-base sm:text-lg">
-          No challenges found.
+        <p className="text-center text-gray-500 text-lg">
+          No challenges available at the moment.
         </p>
       ) : (
-        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {challenges.map((challenge) => (
             <div
               key={challenge._id}
-              className="bg-white rounded-2xl border border-gray-200 shadow-md p-5 sm:p-6 transition-all hover:shadow-lg hover:-translate-y-1 duration-200"
+              className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col justify-between"
             >
-              <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-2">
-                {challenge.title}
-              </h2>
+              <div>
+                <h2 className="text-2xl font-bold text-blue-700 mb-3 leading-tight">
+                  {challenge.title}
+                </h2>
 
-              <p className="text-sm sm:text-base text-gray-500 mb-1">
-                Posted by an Admin:{" "}
-                <span className="font-medium text-gray-700">
-                  {challenge.postedBy?.name || "Unknown"}
-                </span>
-              </p>
+                <p className="text-sm text-gray-500 mb-2">
+                  Posted by:{" "}
+                  <span className="font-medium text-gray-800">
+                    {challenge.postedBy?.name || "Unknown"}
+                  </span>
+                </p>
 
-              <p className="text-gray-700 text-sm sm:text-base mt-2 line-clamp-4">
-                {challenge.content}
-              </p>
+                <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
+                  {challenge.content}
+                </p>
+              </div>
 
-              <a
-                href={challenge.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-600 mt-4 text-sm sm:text-base font-medium hover:underline"
-              >
-                Visit Link <ExternalLink size={16} />
-              </a>
+              <div className="mt-6">
+                <a
+                  href={challenge.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+                >
+                  Visit Link <ExternalLink size={16} />
+                </a>
+              </div>
             </div>
           ))}
         </div>
