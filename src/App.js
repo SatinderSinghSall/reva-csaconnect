@@ -7,7 +7,7 @@ import "../src/App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Quiz from "./components/Quiz";
+import Challenges from "./components/Challenges";
 import DeveloperCredit from "./components/DeveloperCredit";
 
 import AuthProvider from "./context/AuthContext";
@@ -73,7 +73,7 @@ function App() {
                   path="/quiz"
                   element={
                     <ProtectedRoute>
-                      <Quiz />
+                      <Challenges />
                     </ProtectedRoute>
                   }
                 />

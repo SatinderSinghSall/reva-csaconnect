@@ -66,7 +66,7 @@ const Navbar = () => {
             <>
               <li>
                 <Link to="/quiz" className={linkClass("/quiz")}>
-                  Quiz
+                  Challenges
                 </Link>
               </li>
               <li>
@@ -143,7 +143,7 @@ const Navbar = () => {
                   className={linkClass("/quiz")}
                   onClick={toggleMenu}
                 >
-                  Quiz
+                  Challenges
                 </Link>
               </li>
               <li>
