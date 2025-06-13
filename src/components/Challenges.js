@@ -26,7 +26,7 @@ const Challenges = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12 px-6">
       <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
-        🚀 Posted Challenges
+        🚀 Posted Challenges / Opportunities
       </h1>
 
       {loading ? (
