@@ -24,8 +24,8 @@ const Challenges = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12 px-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-8 px-4 sm:px-6 md:px-10">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
         🚀 Posted Challenges / Opportunities
       </h1>
 
@@ -34,28 +34,28 @@ const Challenges = () => {
           <Loader2 className="animate-spin text-blue-600 w-8 h-8" />
         </div>
       ) : challenges.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">
+        <p className="text-center text-gray-500 text-base sm:text-lg">
           No challenges found.
         </p>
       ) : (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {challenges.map((challenge) => (
             <div
               key={challenge._id}
-              className="bg-white rounded-3xl border border-gray-200 shadow-md p-6 transition-all hover:shadow-lg hover:-translate-y-1 duration-200"
+              className="bg-white rounded-2xl border border-gray-200 shadow-md p-5 sm:p-6 transition-all hover:shadow-lg hover:-translate-y-1 duration-200"
             >
-              <h2 className="text-2xl font-semibold text-blue-700 mb-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-2">
                 {challenge.title}
               </h2>
 
-              <p className="text-sm text-gray-500 mb-1">
+              <p className="text-sm sm:text-base text-gray-500 mb-1">
                 Posted by an Admin:{" "}
                 <span className="font-medium text-gray-700">
                   {challenge.postedBy?.name || "Unknown"}
                 </span>
               </p>
 
-              <p className="text-gray-700 text-sm mt-2 line-clamp-4">
+              <p className="text-gray-700 text-sm sm:text-base mt-2 line-clamp-4">
                 {challenge.content}
               </p>
 
@@ -63,7 +63,7 @@ const Challenges = () => {
                 href={challenge.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-600 mt-4 text-sm font-medium hover:underline"
+                className="inline-flex items-center gap-2 text-blue-600 mt-4 text-sm sm:text-base font-medium hover:underline"
               >
                 Visit Link <ExternalLink size={16} />
               </a>
