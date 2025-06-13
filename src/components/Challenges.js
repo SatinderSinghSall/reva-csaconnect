@@ -49,9 +49,12 @@ const Challenges = () => {
                   {challenge.title}
                 </h2>
 
-                <span className="inline-block mb-3 text-xs font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-                  {challenge.postedBy?.name || "Unknown"}
-                </span>
+                <p>
+                  Posted by an Admin - {""}
+                  <span className="inline-block mb-3 text-xs font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+                    {challenge.postedBy?.name || "Unknown"}
+                  </span>
+                </p>
 
                 <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
                   {challenge.content}
