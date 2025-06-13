@@ -70,7 +70,7 @@ function App() {
                 />
 
                 <Route
-                  path="/quiz"
+                  path="/challenges"
                   element={
                     <ProtectedRoute>
                       <Challenges />

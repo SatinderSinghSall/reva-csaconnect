@@ -65,7 +65,7 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link to="/quiz" className={linkClass("/quiz")}>
+                <Link to="/challenges" className={linkClass("/challenges")}>
                   Challenges
                 </Link>
               </li>
@@ -139,8 +139,8 @@ const Navbar = () => {
             <>
               <li>
                 <Link
-                  to="/quiz"
-                  className={linkClass("/quiz")}
+                  to="/challenges"
+                  className={linkClass("/challenges")}
                   onClick={toggleMenu}
                 >
                   Challenges
