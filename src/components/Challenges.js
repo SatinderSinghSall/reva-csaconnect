@@ -24,9 +24,9 @@ const Challenges = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-        Posted Challenges
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12 px-6">
+      <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
+        🚀 Posted Challenges
       </h1>
 
       {loading ? (
@@ -34,25 +34,38 @@ const Challenges = () => {
           <Loader2 className="animate-spin text-blue-600 w-8 h-8" />
         </div>
       ) : challenges.length === 0 ? (
-        <p className="text-center text-gray-500">No challenges found.</p>
+        <p className="text-center text-gray-500 text-lg">
+          No challenges found.
+        </p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {challenges.map((challenge) => (
             <div
               key={challenge._id}
-              className="bg-white border border-blue-100 shadow-md rounded-2xl p-5 transition hover:shadow-lg"
+              className="bg-white rounded-3xl border border-gray-200 shadow-md p-6 transition-all hover:shadow-lg hover:-translate-y-1 duration-200"
             >
-              <h2 className="text-xl font-semibold text-blue-700 mb-2">
+              <h2 className="text-2xl font-semibold text-blue-700 mb-2">
                 {challenge.title}
               </h2>
-              <p className="text-gray-700 text-sm mb-3">{challenge.content}</p>
+
+              <p className="text-sm text-gray-500 mb-1">
+                Posted by:{" "}
+                <span className="font-medium text-gray-700">
+                  {challenge.postedBy?.name || "Unknown"}
+                </span>
+              </p>
+
+              <p className="text-gray-700 text-sm mt-2 line-clamp-4">
+                {challenge.content}
+              </p>
+
               <a
                 href={challenge.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-blue-500 text-sm mt-2 break-words hover:underline"
+                className="inline-flex items-center gap-2 text-blue-600 mt-4 text-sm font-medium hover:underline"
               >
-                {challenge.link}
+                Visit Link <ExternalLink size={16} />
               </a>
             </div>
           ))}
