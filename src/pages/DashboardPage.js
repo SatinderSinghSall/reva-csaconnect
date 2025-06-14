@@ -26,6 +26,27 @@ const DashboardPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const StatCard = ({ icon, label, value, loading }) => (
+    <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow border hover:shadow-md transition">
+      <div className="p-2 rounded-full bg-orange-100 text-orange-500">
+        {icon}
+      </div>
+      <div>
+        {loading ? (
+          <div className="space-y-1">
+            <div className="h-6 w-16 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-24 bg-gray-100 rounded animate-pulse" />
+          </div>
+        ) : (
+          <>
+            <div className="text-xl font-bold text-gray-900">{value}</div>
+            <div className="text-sm text-gray-600">{label}</div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
@@ -94,16 +115,19 @@ const DashboardPage = () => {
             icon={<FileTextIcon className="w-6 h-6" />}
             label="Posts"
             value={posts.length}
+            loading={loading}
           />
           <StatCard
             icon={<ThumbsUpIcon className="w-6 h-6" />}
             label="Likes"
             value={totalLikes}
+            loading={loading}
           />
           <StatCard
             icon={<MessageCircleIcon className="w-6 h-6" />}
             label="Comments"
             value={totalComments}
+            loading={loading}
           />
         </div>
       </div>
