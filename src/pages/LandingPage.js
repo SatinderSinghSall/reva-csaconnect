@@ -167,6 +167,30 @@ const LandingPage = () => {
         </motion.div>
       </section>
 
+      {/* Features Section */}
+      <section className="mt-28 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left relative z-10">
+        {features.map(({ icon, title, description }, i) => (
+          <motion.article
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 + i * 0.3 }}
+            className="bg-white/30 backdrop-blur-lg border border-orange-100 rounded-3xl p-8 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.03] flex flex-col items-start gap-4"
+          >
+            <div className="p-4 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl shadow-inner">
+              {icon}
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 tracking-tight">
+              {title}
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-base">
+              {description}
+            </p>
+          </motion.article>
+        ))}
+      </section>
+
       <Peoples />
 
       {/* How It Works */}

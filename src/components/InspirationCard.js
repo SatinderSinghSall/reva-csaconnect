@@ -13,7 +13,8 @@ const InspirationCard = () => {
           {/* Left: Image */}
           <div className="md:w-1/3">
             <img
-              src="/images/prof_sneha.jpeg"
+              // src="/images/prof_sneha.jpeg"
+              src="/images/reva_logo.jpeg"
               alt="Prof. Sneha N"
               className="w-full h-auto object-cover object-center md:rounded-l-3xl"
             />
