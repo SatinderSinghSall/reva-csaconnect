@@ -25,7 +25,7 @@ const Challenges = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-blue-50 py-12 px-6 sm:px-10 lg:px-20">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 text-center">
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-12">
         🚀 Posted Challenges & Opportunities
       </h1>
 
@@ -42,21 +42,28 @@ const Challenges = () => {
           {challenges.map((challenge) => (
             <div
               key={challenge._id}
-              className="bg-white rounded-3xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between"
+              className="bg-white rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between"
             >
               <div>
-                <h2 className="text-xl font-semibold text-blue-700 mb-3">
+                <h2 className="text-xl font-semibold text-blue-700 mb-2 hover:underline cursor-pointer">
                   {challenge.title}
                 </h2>
 
                 <p>
                   Posted by an Admin - {""}
-                  <span className="inline-block mb-3 text-xs font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+                  <span className="inline-block text-xs font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
                     {challenge.postedBy?.name || "Unknown"}
                   </span>
                 </p>
 
-                <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
+                <p className="text-xs text-gray-400 mb-4">
+                  {new Date(challenge.createdAt).toLocaleString(undefined, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </p>
+
+                <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
                   {challenge.content}
                 </p>
               </div>
@@ -66,7 +73,7 @@ const Challenges = () => {
                   href={challenge.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
                 >
                   Visit Link <ExternalLink size={16} />
                 </a>
