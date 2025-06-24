@@ -8,6 +8,7 @@ import {
   MessageCircleIcon,
   ThumbsUpIcon,
   PlusCircleIcon,
+  XIcon,
 } from "lucide-react";
 import {
   BarChart,
@@ -18,13 +19,21 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { Dialog } from "@headlessui/react";
 
 const DashboardPage = () => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
+    setModalOpen(true);
+  };
 
   const StatCard = ({ icon, label, value, loading }) => (
     <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow border hover:shadow-md transition">
@@ -84,7 +93,6 @@ const DashboardPage = () => {
           </span>
           !
         </h1>
-        {/* Desktop-only button */}
         <button
           className="hidden md:flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2.5 rounded-full shadow transition"
           onClick={() => navigate("/create-post")}
@@ -94,9 +102,7 @@ const DashboardPage = () => {
         </button>
       </div>
 
-      {/* Info & Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        {/* Profile Info */}
         <div className="col-span-1 bg-white shadow-md rounded-2xl p-6 border border-gray-100">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             Your Info
@@ -109,7 +115,6 @@ const DashboardPage = () => {
           </p>
         </div>
 
-        {/* Stats */}
         <div className="col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             icon={<FileTextIcon className="w-6 h-6" />}
@@ -132,7 +137,6 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Chart */}
       <div className="bg-white rounded-2xl shadow p-6 mb-10 border border-gray-100">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
           Post Engagement Overview
@@ -153,7 +157,6 @@ const DashboardPage = () => {
         )}
       </div>
 
-      {/* User Posts */}
       <div>
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">
           Your Posts
@@ -179,7 +182,8 @@ const DashboardPage = () => {
             {posts.map((post) => (
               <div
                 key={post._id}
-                className="bg-white border border-gray-100 p-5 rounded-xl shadow-sm hover:shadow-md transition"
+                className="bg-white border border-gray-400 p-5 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer"
+                onClick={() => handlePostClick(post)}
               >
                 <h3 className="text-lg font-semibold text-gray-800">
                   {post.title}
@@ -195,7 +199,7 @@ const DashboardPage = () => {
           </div>
         )}
       </div>
-      {/* Mobile Sticky Button */}
+
       <div className="md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[90%] z-50">
         <button
           className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-full shadow-lg transition"
@@ -205,18 +209,75 @@ const DashboardPage = () => {
           Create Post
         </button>
       </div>
+
+      {/* Post Detail Modal */}
+      <Dialog
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl border">
+            <div className="flex justify-between items-center mb-4">
+              <Dialog.Title className="text-xl font-semibold text-gray-800">
+                {selectedPost?.title}
+              </Dialog.Title>
+              <button onClick={() => setModalOpen(false)}>
+                <XIcon className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+              </button>
+            </div>
+            {selectedPost && (
+              <div className="space-y-3 text-sm text-gray-700">
+                <p>
+                  <strong>Content:</strong> {selectedPost.content}
+                </p>
+                {selectedPost.skills?.length > 0 && (
+                  <p>
+                    <strong>Skills:</strong> {selectedPost.skills.join(", ")}
+                  </p>
+                )}
+                {selectedPost.link && (
+                  <p>
+                    <strong>Link:</strong>{" "}
+                    <a
+                      href={selectedPost.link}
+                      className="text-blue-600 underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {selectedPost.link}
+                    </a>
+                  </p>
+                )}
+                {selectedPost.image && (
+                  <div>
+                    <strong>Image:</strong>
+                    <img
+                      src={selectedPost.image}
+                      alt="Post"
+                      className="mt-2 rounded-lg max-h-60 object-cover"
+                    />
+                  </div>
+                )}
+                <p>
+                  <strong>Likes:</strong> {selectedPost.likes.length}
+                </p>
+                <p>
+                  <strong>Comments:</strong>
+                </p>
+                <ul className="list-disc ml-5 space-y-1">
+                  {selectedPost.comments.map((c, i) => (
+                    <li key={i}>{c.text}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 };
-
-const StatCard = ({ icon, label, value }) => (
-  <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow border hover:shadow-md transition">
-    <div className="p-2 rounded-full bg-orange-100 text-orange-500">{icon}</div>
-    <div>
-      <div className="text-xl font-bold text-gray-900">{value}</div>
-      <div className="text-sm text-gray-600">{label}</div>
-    </div>
-  </div>
-);
 
 export default DashboardPage;
