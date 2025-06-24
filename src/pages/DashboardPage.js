@@ -216,61 +216,99 @@ const DashboardPage = () => {
         onClose={() => setModalOpen(false)}
         className="relative z-50"
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+          aria-hidden="true"
+        />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl border">
-            <div className="flex justify-between items-center mb-4">
-              <Dialog.Title className="text-xl font-semibold text-gray-800">
+          <Dialog.Panel className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl border border-gray-200">
+            <div className="flex justify-between items-center mb-6">
+              <Dialog.Title className="text-2xl font-bold text-gray-900">
                 {selectedPost?.title}
               </Dialog.Title>
-              <button onClick={() => setModalOpen(false)}>
-                <XIcon className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+              <button
+                onClick={() => setModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition"
+              >
+                <XIcon className="w-6 h-6" />
               </button>
             </div>
+
             {selectedPost && (
-              <div className="space-y-3 text-sm text-gray-700">
-                <p>
-                  <strong>Content:</strong> {selectedPost.content}
-                </p>
-                {selectedPost.skills?.length > 0 && (
-                  <p>
-                    <strong>Skills:</strong> {selectedPost.skills.join(", ")}
+              <div className="space-y-6 text-sm text-gray-800 max-h-[70vh] overflow-y-auto pr-2">
+                <div>
+                  <p className="text-base whitespace-pre-wrap">
+                    {selectedPost.content}
                   </p>
+                </div>
+
+                {selectedPost.skills?.length > 0 && (
+                  <div>
+                    <span className="font-medium text-gray-700">Skills:</span>{" "}
+                    <span className="text-gray-600">
+                      {selectedPost.skills.join(", ")}
+                    </span>
+                  </div>
                 )}
+
                 {selectedPost.link && (
-                  <p>
-                    <strong>Link:</strong>{" "}
+                  <div>
+                    <span className="font-medium text-gray-700">Link:</span>{" "}
                     <a
                       href={selectedPost.link}
-                      className="text-blue-600 underline"
+                      className="text-blue-600 underline break-all"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {selectedPost.link}
                     </a>
-                  </p>
+                  </div>
                 )}
+
                 {selectedPost.image && (
                   <div>
-                    <strong>Image:</strong>
                     <img
                       src={selectedPost.image}
                       alt="Post"
-                      className="mt-2 rounded-lg max-h-60 object-cover"
+                      className="rounded-xl w-full max-h-64 object-cover border"
                     />
                   </div>
                 )}
-                <p>
-                  <strong>Likes:</strong> {selectedPost.likes.length}
-                </p>
-                <p>
-                  <strong>Comments:</strong>
-                </p>
-                <ul className="list-disc ml-5 space-y-1">
-                  {selectedPost.comments.map((c, i) => (
-                    <li key={i}>{c.text}</li>
-                  ))}
-                </ul>
+
+                <div className="flex gap-6 text-sm text-gray-500">
+                  <span>👍 {selectedPost.likes.length} Likes</span>
+                  <span>💬 {selectedPost.comments.length} Comments</span>
+                </div>
+
+                {/* Comments Section */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                    Comments
+                  </h3>
+                  <ul className="space-y-4">
+                    {selectedPost.comments.map((c, i) => (
+                      <li key={i} className="bg-gray-100 rounded-xl p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-medium text-gray-900">
+                            {c.name || "Anonymous"}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(c.createdAt).toLocaleString("en-US", {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                          </span>
+                        </div>
+                        <p className="text-gray-700">{c.text}</p>
+                      </li>
+                    ))}
+                    {selectedPost.comments.length === 0 && (
+                      <p className="text-sm text-gray-500 italic">
+                        No comments yet.
+                      </p>
+                    )}
+                  </ul>
+                </div>
               </div>
             )}
           </Dialog.Panel>
