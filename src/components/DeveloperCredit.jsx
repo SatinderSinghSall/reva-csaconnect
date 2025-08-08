@@ -11,7 +11,7 @@ const DeveloperCredit = () => {
           <span className="text-pink-600 font-medium">passion</span> and{" "}
           <span className="text-blue-600 font-medium">precision</span> by{" "}
           <a
-            href=""
+            href="https://satinder-portfolio.vercel.app/"
             target="_blank"
             className="text-blue-700 font-semibold hover:text-blue-900 transition duration-200"
           >
