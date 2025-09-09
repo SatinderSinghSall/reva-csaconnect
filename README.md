@@ -13,7 +13,6 @@ achievements, and interact through likes/reactions and comments.
 
 ![image](https://github.com/user-attachments/assets/bb04c539-03ed-4b11-8505-86d4bbca9560)
 
-````markdown
 # 🌐 CSAConnect
 
 > A vibrant digital platform for the School of CSA @ REVA University to **collaborate, innovate, and connect**.  
@@ -138,8 +137,3 @@ We welcome contributions!
 - **Prof. Sneha N** — Visionary behind CSAConnect
 - **REVA University - School of CSA**
 - All students, faculty, and contributors who make this platform possible 🚀
-
-```
-
-```
-````
