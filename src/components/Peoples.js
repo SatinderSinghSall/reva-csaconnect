@@ -12,7 +12,7 @@ const people = [
     names: ["Prof. B. Manjunath", "Dr. Ambili P S", "Dr. G. Sasikala"],
   },
   {
-    name: "Prof. Sneha N",
+    name: "Dr. Sneha N",
     designation: "Assistant Professor in the School of CSA",
     email: "sneha.n@reva.edu.in",
     image: "/images/prof_sneha.jpeg",

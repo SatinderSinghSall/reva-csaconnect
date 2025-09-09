@@ -24,7 +24,7 @@ const InspirationCard = () => {
           <div className="md:w-2/3 p-6 sm:p-10 flex flex-col justify-center space-y-4">
             <div>
               <h3 className="text-2xl font-semibold text-gray-900">
-                Prof. Sneha N
+                Dr. Sneha N
               </h3>
               <p className="text-sm text-gray-500">Assistant Professor</p>
               <p className="text-sm text-gray-500">
