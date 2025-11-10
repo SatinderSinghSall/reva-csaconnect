@@ -217,23 +217,40 @@ export default function Events() {
                 )}
               </div>
 
-              {/* Objectives */}
-              {event.objective && (
+              {/* Objective / Objectives */}
+              {(event.objective || event.objectives) && (
                 <div className="mt-3">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
                     <PenTool className="w-5 h-5 text-blue-500" />
                     Objective
                   </h3>
 
-                  {Array.isArray(event.objective) ? (
+                  {Array.isArray(event.objective || event.objectives) ? (
                     <ul className="list-disc ml-5 text-gray-700 space-y-1">
-                      {event.objective.map((obj, i) => (
+                      {(event.objective || event.objectives).map((obj, i) => (
                         <li key={i}>{obj}</li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-gray-700">{event.objective}</p>
+                    <p className="text-gray-700">
+                      {event.objective || event.objectives}
+                    </p>
                   )}
+                </div>
+              )}
+
+              {/* How to Play */}
+              {event.howToPlay && (
+                <div className="mt-4">
+                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
+                    <ClipboardList className="w-5 h-5 text-blue-500" />
+                    How to Play
+                  </h3>
+                  <ul className="list-decimal ml-5 text-gray-700 space-y-1 text-sm">
+                    {event.howToPlay.map((step, i) => (
+                      <li key={i}>{step}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
@@ -267,6 +284,29 @@ export default function Events() {
                 </div>
               )}
 
+              {/* Example Section (Code Karaoke) */}
+              {event.example && (
+                <div className="mt-4 bg-gray-100 p-3 rounded-lg font-mono text-sm text-gray-800 overflow-x-auto">
+                  <p className="mb-2 font-semibold text-gray-700">Example:</p>
+                  <pre>{event.example}</pre>
+                </div>
+              )}
+
+              {/* Scoring */}
+              {event.scoring && (
+                <div className="mt-4">
+                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
+                    <ClipboardList className="w-5 h-5 text-blue-500" />
+                    Scoring Criteria
+                  </h3>
+                  <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
+                    {event.scoring.map((score, i) => (
+                      <li key={i}>{score}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Additional Info */}
               <div className="mt-4 text-sm text-gray-700 space-y-1">
                 {event.team && (
@@ -282,6 +322,11 @@ export default function Events() {
                 {event.eligibility && (
                   <p>
                     <strong>Eligibility:</strong> {event.eligibility}
+                  </p>
+                )}
+                {event.duration && (
+                  <p>
+                    <strong>Duration:</strong> {event.duration}
                   </p>
                 )}
               </div>
