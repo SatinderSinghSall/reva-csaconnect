@@ -20,6 +20,7 @@ import DashboardPage from "./pages/DashboardPage";
 import FeedPage from "./pages/FeedPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
+import Events from "./pages/Events";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/events" element={<Events />} />
 
                 {/* 🔐 Protected Routes */}
                 <Route

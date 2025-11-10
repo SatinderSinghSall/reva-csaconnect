@@ -8,84 +8,90 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  const linkClass = (path) =>
-    `transition ${
-      location.pathname === path
-        ? "text-orange-400 font-semibold"
-        : "hover:text-orange-400"
-    }`;
+  const NavLinkItem = ({ to, label, external }) => {
+    const isActive = location.pathname === to;
+    const baseClass =
+      "relative transition-all duration-200 hover:text-orange-400";
+    const activeClass = isActive ? "text-orange-400 font-semibold" : "";
+    const underline = isActive ? (
+      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-orange-400 rounded-full" />
+    ) : null;
+
+    if (external) {
+      return (
+        <li>
+          <a
+            href={to}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${baseClass} ${activeClass} block py-2`}
+          >
+            {label}
+            {underline}
+          </a>
+        </li>
+      );
+    }
+
+    return (
+      <li>
+        <Link
+          to={to}
+          className={`${baseClass} ${activeClass} block py-2`}
+          onClick={() => setIsOpen(false)}
+        >
+          {label}
+          {underline}
+        </Link>
+      </li>
+    );
+  };
 
   return (
-    <nav className="bg-gray-900 text-white px-6 py-4 shadow-md">
-      <div className="flex justify-between items-center">
-        <div className="text-xl font-bold">REVA University: CSAConnect</div>
+    <nav className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md text-white shadow-lg">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+        {/* Brand */}
+        <Link
+          to="/"
+          className="text-lg md:text-xl font-bold tracking-wide text-orange-400 hover:text-white transition-all"
+        >
+          REVA University<span className="text-gray-300">: CSAConnect</span>
+        </Link>
 
-        {/* Hamburger for Mobile */}
-        <div className="md:hidden">
-          <button
-            onClick={toggleMenu}
-            className="text-white focus:outline-none"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        {/* Mobile Toggle */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden text-white focus:outline-none transition-transform"
+        >
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6">
-          <li>
-            <Link to="/" className={linkClass("/")}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <a
-              href="https://reva-csaconnect-admin.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-orange-400 transition"
-            >
-              Admin
-            </a>
-          </li>
+        {/* Desktop Links */}
+        <ul className="hidden md:flex items-center gap-8 text-sm lg:text-base">
+          <NavLinkItem to="/" label="Home" />
+          <NavLinkItem to="/events" label="Events" />
+          <NavLinkItem
+            to="https://reva-csaconnect-admin.vercel.app"
+            label="Admin"
+            external
+          />
+
           {!user ? (
             <>
-              <li>
-                <Link to="/login" className={linkClass("/login")}>
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link to="/register" className={linkClass("/register")}>
-                  Register
-                </Link>
-              </li>
+              <NavLinkItem to="/login" label="Login" />
+              <NavLinkItem to="/register" label="Register" />
             </>
           ) : (
             <>
-              <li>
-                <Link to="/challenges" className={linkClass("/challenges")}>
-                  Challenges
-                </Link>
-              </li>
-              <li>
-                <Link to="/dashboard" className={linkClass("/dashboard")}>
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/feed" className={linkClass("/feed")}>
-                  My Feed
-                </Link>
-              </li>
+              <NavLinkItem to="/challenges" label="Challenges" />
+              <NavLinkItem to="/dashboard" label="Dashboard" />
+              <NavLinkItem to="/feed" label="My Feed" />
               <li>
                 <button
-                  onClick={() => {
-                    logout();
-                    setIsOpen(false);
-                  }}
-                  className="hover:text-red-400 transition"
+                  onClick={logout}
+                  className="px-4 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition"
                 >
                   Logout
                 </button>
@@ -96,81 +102,36 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Dropdown */}
-      {isOpen && (
-        <ul className="mt-4 flex flex-col gap-4 md:hidden">
-          <li>
-            <Link to="/" className={linkClass("/")} onClick={toggleMenu}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <a
-              href="https://reva-csaconnect-admin.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-orange-400 transition"
-              onClick={toggleMenu}
-            >
-              Admin
-            </a>
-          </li>
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isOpen ? "max-h-[500px] py-3" : "max-h-0"
+        }`}
+      >
+        <ul className="flex flex-col items-start gap-3 px-6 text-base font-medium">
+          <NavLinkItem to="/" label="Home" />
+          <NavLinkItem to="/events" label="Events" />
+          <NavLinkItem
+            to="https://reva-csaconnect-admin.vercel.app"
+            label="Admin"
+            external
+          />
           {!user ? (
             <>
-              <li>
-                <Link
-                  to="/login"
-                  className={linkClass("/login")}
-                  onClick={toggleMenu}
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/register"
-                  className={linkClass("/register")}
-                  onClick={toggleMenu}
-                >
-                  Register
-                </Link>
-              </li>
+              <NavLinkItem to="/login" label="Login" />
+              <NavLinkItem to="/register" label="Register" />
             </>
           ) : (
             <>
-              <li>
-                <Link
-                  to="/challenges"
-                  className={linkClass("/challenges")}
-                  onClick={toggleMenu}
-                >
-                  Challenges
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard"
-                  className={linkClass("/dashboard")}
-                  onClick={toggleMenu}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/feed"
-                  className={linkClass("/feed")}
-                  onClick={toggleMenu}
-                >
-                  My Feed
-                </Link>
-              </li>
-              <li>
+              <NavLinkItem to="/challenges" label="Challenges" />
+              <NavLinkItem to="/dashboard" label="Dashboard" />
+              <NavLinkItem to="/feed" label="My Feed" />
+              <li className="w-full">
                 <button
                   onClick={() => {
                     logout();
-                    toggleMenu();
+                    setIsOpen(false);
                   }}
-                  className="hover:text-red-400 transition"
+                  className="w-full py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition"
                 >
                   Logout
                 </button>
@@ -178,7 +139,7 @@ const Navbar = () => {
             </>
           )}
         </ul>
-      )}
+      </div>
     </nav>
   );
 };
