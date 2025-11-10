@@ -55,12 +55,14 @@ export default function Events() {
         "Level 7: The Final Codebreaker",
       ],
     },
+
     {
       id: 2,
       name: "Film in a Frame – Minimalistic Poster Design",
+      category: "Design & Media Event",
       tagline: "Where Ideas Take Shape",
       description:
-        "Design a minimalistic poster that conveys a strong visual message through simplicity, space, and creativity.",
+        "Participants are required to design a minimalistic poster that conveys a strong visual message using simplicity, space, and creativity. The focus is on clean design, color harmony, and impactful typography.",
       dateTime: "18th November 2025 | 9:30 AM – 11:30 AM",
       team: "Individual participation (1 member)",
       fee: "₹30",
@@ -68,22 +70,23 @@ export default function Events() {
       rules: [
         "Theme will be announced on the spot.",
         "Time limit is strictly 2 hours.",
-        "Participants must use Adobe Photoshop / Illustrator.",
+        "Participants must use Adobe Photoshop or Illustrator.",
         "Only minimalistic design principles should be followed (no cluttered visuals).",
-        "Stock images and external assets allowed only if copyright-free.",
-        "Final submission must be in JPEG / PNG format (A3 size, 300 DPI).",
-        "Evaluation based on creativity, concept clarity, layout, and visual balance.",
+        "Final submission must be in JPEG or PNG format (A3 size, 300 DPI).",
+        "Evaluation will be based on creativity, concept clarity, layout, and visual balance.",
       ],
       registration:
         "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
+
     {
       id: 3,
       name: "AdVerse – Product Ad Shoot",
       category: "Film & Media Event",
       description:
-        "Create a 30-second product advertisement showcasing creativity, storytelling, and cinematography skills.",
+        "Participants will create a 30-second product advertisement showcasing creativity, storytelling, and cinematography skills.",
       dateTime: "19th November 2025 | 9:30 AM – 12:00 Noon",
+      duration: "2 hours",
       team: "2 members per team",
       fee: "₹50",
       eligibility: "Any CSA student and 2nd Year B.Sc (M&A) mandatory",
@@ -99,21 +102,35 @@ export default function Events() {
       registration:
         "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
+
     {
       id: 4,
       name: "CineMorph – Short Movie Challenge",
       category: "Film & 3D Event (For 3rd Year Students)",
       description:
-        "Produce a 1–2 minute short movie based on topics announced on the spot.",
+        "Participants must produce a 1–2 minute short movie based on topics announced on the spot. The challenge encourages creativity, storytelling, and technical skills in filmmaking.",
       dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
       eligibility:
         "Open to all CSA students | 3rd Year B.Sc (Media & Animation) students mandatory",
+      team: "Individual or group participation (max 3 members)",
+      duration: "6 hours",
+      rules: [
+        "Topic will be announced on the spot.",
+        "Total video duration must be between 1–2 minutes.",
+        "Participants can use any device for filming (camera or mobile).",
+        "Editing tools of choice allowed (Adobe Premiere, DaVinci Resolve, etc.).",
+        "Original content only – plagiarism or reused clips not allowed.",
+        "Submission format: MP4, 1080p resolution.",
+        "Judging based on creativity, storytelling, cinematography, and editing.",
+      ],
       registration:
         "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
+
     {
       id: 5,
       name: "CodeToUnlock",
+      category: "Technical Coding Event",
       organizedBy: "CSA Club",
       dateTime: "20th November 2025 | 9:30 AM – 11:30 AM",
       faculty: [
@@ -125,9 +142,9 @@ export default function Events() {
         { name: "Arathi", phone: "9886999401" },
       ],
       objective:
-        "A coding-based technical event to test logical thinking, debugging, and problem-solving through code reconstruction.",
-      team: "2 members",
-      fee: "₹50",
+        "“CodeToUnlock” is a coding-based technical event designed to test participants’ logical thinking and programming knowledge. The event challenges students to analyze incomplete codes, identify missing logic, and reconstruct the correct program flow. It aims to enhance problem-solving, debugging, and code interpretation skills in an engaging and competitive environment.",
+      team: "2 members per team",
+      fee: "₹50 per team",
       rules: [
         "The event consists of two rounds – Code Completion and Logic Reconstruction.",
         "Round 1: Programs with missing lines and multiple-choice options.",
@@ -145,34 +162,82 @@ export default function Events() {
         "Output validation",
       ],
     },
+
     {
       id: 6,
       name: "Code Karaoke",
       category: "Fun Tech Activity",
       description:
-        "Perform code like karaoke — sing, rap, or narrate it dramatically while others guess the output or logic.",
+        "Participants are given a short piece of code (any language). They must sing, rap, or dramatically narrate it — like karaoke — while the audience guesses the output or what the code does.",
       duration: "30–45 Minutes",
       team: "2 members per team",
-      fee: "₹50",
+      fee: "₹50 per team",
+      eligibility: "Open to all students",
+      activitySetup: {
+        groupSize: "Small teams or individuals",
+        time: "30–45 minutes",
+        materials: "Projector / printed code snippets",
+      },
       objectives: [
         "Improve familiarity with programming syntax.",
         "Understand and visualize code flow.",
-        "Make coding fun and engaging.",
-        "Encourage confident and clear explanation skills.",
+        "Reduce fear and make coding fun.",
+        "Encourage clear and confident explanation skills.",
       ],
       howToPlay: [
-        "Select a short code snippet.",
-        "One participant performs the code dramatically or musically.",
+        "Select a simple code snippet.",
+        "One participant performs the code (reads dramatically / sings / rap style).",
         "Others guess the output or function.",
         "Points awarded for correct explanation and best performance.",
       ],
-      example: `for i in range(1, 6):\n   print('Hello 🎤', i)`,
+      example: `for i in range(1, 6):\n    print('Hello 🎤', i)\n\nPerform like: “Helloooo number oneee… Helloooo number twoooo…” 🎶`,
+      variations: [
+        "Rap Code – Perform to a beat.",
+        "Whisper Code – Narrate dramatically like a thriller.",
+        "Opera Code – Sing code in opera voice 🎶.",
+        "Speed Round – Read code fast and stay accurate.",
+      ],
       scoring: [
         "Best Code Explanation – 3 Points",
         "Best Performance – 2 Points",
         "Participation Bonus – 1 Point",
       ],
       registration: "https://forms.gle/D2FpczvzVQXWWCqcA",
+    },
+
+    {
+      id: 7,
+      name: "3D Art & Design",
+      category: "3D Art & Design",
+      description:
+        "Create a 3D model in Autodesk Maya based on the given theme. Participants must demonstrate modelling, texturing, and lighting within the given time.",
+      dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
+      eligibility: "CSA Students",
+      duration: "9:00 AM – 3:00 PM",
+      team: "Individual Participation",
+      rules: [
+        "Theme will be announced on the spot.",
+        "Software: Autodesk Maya & Substance Painter (Texturing & Lighting mandatory).",
+        "Time limit: 6 hours.",
+        "Only in-built tools and materials allowed (no pre-made assets).",
+        "Submission format: Rendered image (HD) and Maya project file (.fbx & .mb).",
+        "Judging criteria: Model accuracy, detailing, lighting, and presentation.",
+      ],
+    },
+
+    {
+      id: 8,
+      name: "Code2Unlock",
+      category: "Code2Unlock",
+      organizedBy: "AI-IOT Club Presents",
+      description:
+        "The AI-IOT Club ,Department of Computer Science and Applications (CSA) at Reva University is thrilled to launch Code to Unlock – a fast-paced, puzzle-based C programming competition! You and your partner will race against the clock to solve three levels of clever C-based challenges. You'll need to trace logic, hunt for bugs, and unravel riddles hidden in the code. Each level you solve 'unlocks' the next, with the difficulty increasing as you go.",
+      dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
+      team: "Team Size:  2 members",
+      rules: ["Language: C Programing", "Levels: 3"],
+      fee: " ₹60 per team",
+      registration:
+        "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
     },
   ];
 
@@ -188,7 +253,6 @@ export default function Events() {
             key={event.id}
             className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
           >
-            {/* Header */}
             <div className="p-6">
               <h2 className="text-2xl font-semibold text-blue-700 flex items-center gap-2 mb-1">
                 <BookOpen className="w-6 h-6 text-blue-500" />
@@ -201,12 +265,51 @@ export default function Events() {
                 </p>
               )}
 
-              {/* Date & Organizer */}
+              {event.description && (
+                <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                  {event.description}
+                </p>
+              )}
+
               <div className="space-y-1 mb-4">
                 <p className="flex items-center gap-2 text-gray-700">
                   <CalendarDays className="w-5 h-5 text-blue-500" />
                   {event.dateTime}
                 </p>
+                {event.faculty && event.faculty.length > 0 && (
+                  <div className="mt-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
+                      <Users className="w-5 h-5 text-blue-500" />
+                      Faculty Coordinators
+                    </h3>
+                    <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
+                      {event.faculty.map((fac, i) => (
+                        <li key={i}>
+                          {fac.name} –{" "}
+                          <span className="text-gray-600">{fac.phone}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {event.student && event.student.length > 0 && (
+                  <div className="mt-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
+                      <Users className="w-5 h-5 text-blue-500" />
+                      Students
+                    </h3>
+                    <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
+                      {event.student.map((stu, i) => (
+                        <li key={i}>
+                          {stu.name} –{" "}
+                          <span className="text-gray-600">{stu.phone}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {event.organizedBy && (
                   <p className="flex items-center gap-2 text-gray-700">
                     <Users className="w-5 h-5 text-blue-500" />
@@ -217,7 +320,6 @@ export default function Events() {
                 )}
               </div>
 
-              {/* Objective / Objectives */}
               {(event.objective || event.objectives) && (
                 <div className="mt-3">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
@@ -239,7 +341,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* How to Play */}
               {event.howToPlay && (
                 <div className="mt-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
@@ -254,7 +355,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Rules */}
               {event.rules && (
                 <div className="mt-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
@@ -269,7 +369,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Levels */}
               {event.levels && (
                 <div className="mt-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
@@ -284,7 +383,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Example Section (Code Karaoke) */}
               {event.example && (
                 <div className="mt-4 bg-gray-100 p-3 rounded-lg font-mono text-sm text-gray-800 overflow-x-auto">
                   <p className="mb-2 font-semibold text-gray-700">Example:</p>
@@ -292,7 +390,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Scoring */}
               {event.scoring && (
                 <div className="mt-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
@@ -307,7 +404,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Additional Info */}
               <div className="mt-4 text-sm text-gray-700 space-y-1">
                 {event.team && (
                   <p>
@@ -332,7 +428,6 @@ export default function Events() {
               </div>
             </div>
 
-            {/* Footer */}
             {event.registration && (
               <div className="border-t border-gray-100 bg-gray-50 p-4 rounded-b-2xl flex justify-end">
                 <a
