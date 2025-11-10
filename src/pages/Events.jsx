@@ -179,7 +179,7 @@ export default function Events() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 px-6 py-12">
       <h1 className="text-4xl font-bold text-center mb-12 text-blue-700">
-        🎓 CSA Tech & Media Fest 2025
+        🎓 REVA University - CSA Tech & Media Fest 2025
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto">
