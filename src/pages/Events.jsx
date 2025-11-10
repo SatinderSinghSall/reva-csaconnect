@@ -17,8 +17,8 @@ export default function Events() {
       organizedBy: "AI-IOT Club and Software Coding Club",
       dateTime: "17th November 2025 | 10:00 AM – 12:00 PM",
       faculty: [
-        { name: "Aashita Paliwal", phone: "9205713611" },
-        { name: "Farhanaaz", phone: "9902329068" },
+        { name: "Prof. Farhanaaz", phone: "9902329068" },
+        { name: "Prof. Aashita Paliwal", phone: "9205713611" },
       ],
       objective: [
         "Enhance logical thinking, problem-solving, and teamwork through a blend of treasure hunt and coding challenges.",
