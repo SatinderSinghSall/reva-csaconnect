@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { X, Sparkles, Zap } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const PostDetailsPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLikesModal, setShowLikesModal] = useState(false);
 
-  const fetchPostDetails = async () => {
+  const fetchPostDetails = useCallback(async () => {
     try {
       const res = await axios.get(
         `https://csaconnect-backend.onrender.com/api/posts/${postId}`
@@ -33,7 +33,11 @@ const PostDetailsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId]);
+
+  useEffect(() => {
+    fetchPostDetails();
+  }, [fetchPostDetails]);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -95,9 +99,9 @@ const PostDetailsPage = () => {
     ));
   };
 
-  useEffect(() => {
-    fetchPostDetails();
-  }, [postId]);
+  // useEffect(() => {
+  //   fetchPostDetails();
+  // }, [postId]);
 
   if (loading)
     return (
