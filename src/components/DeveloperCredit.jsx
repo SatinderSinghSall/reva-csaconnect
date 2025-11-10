@@ -13,6 +13,7 @@ const DeveloperCredit = () => {
           <a
             href="https://satinder-portfolio.vercel.app/"
             target="_blank"
+            rel="noreferrer"
             className="text-blue-700 font-semibold hover:text-blue-900 transition duration-200"
           >
             Satinder Singh Sall
