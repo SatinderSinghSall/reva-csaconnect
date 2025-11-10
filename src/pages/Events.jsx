@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   CalendarDays,
   Users,
@@ -7,9 +7,17 @@ import {
   Layers,
   PenTool,
   ExternalLink,
+  ChevronDown,
+  Clock,
+  Target,
+  Lightbulb,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Events() {
+  const [openEvent, setOpenEvent] = useState(null);
+  const toggleEvent = (id) => setOpenEvent(openEvent === id ? null : id);
+
   const events = [
     {
       id: 1,
@@ -173,6 +181,8 @@ export default function Events() {
         "Code efficiency",
         "Output validation",
       ],
+      registration:
+        "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
     },
 
     {
@@ -246,186 +256,98 @@ export default function Events() {
         "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
 
-    {
-      id: 8,
-      name: "Code2Unlock",
-      category: "Code2Unlock",
-      organizedBy: "AI-IOT Club Presents",
-      description:
-        "The AI-IOT Club ,Department of Computer Science and Applications (CSA) at Reva University is thrilled to launch Code to Unlock – a fast-paced, puzzle-based C programming competition! You and your partner will race against the clock to solve three levels of clever C-based challenges. You'll need to trace logic, hunt for bugs, and unravel riddles hidden in the code. Each level you solve 'unlocks' the next, with the difficulty increasing as you go.",
-      dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
-      team: "Team Size:  2 members",
-      rules: ["Language: C Programing", "Levels: 3"],
-      fee: " ₹60 per team",
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
-    },
+    // {
+    //   id: 8,
+    //   name: "Code2Unlock",
+    //   category: "Code2Unlock",
+    //   organizedBy: "AI-IOT Club Presents",
+    //   description:
+    //     "The AI-IOT Club ,Department of Computer Science and Applications (CSA) at Reva University is thrilled to launch Code to Unlock – a fast-paced, puzzle-based C programming competition! You and your partner will race against the clock to solve three levels of clever C-based challenges. You'll need to trace logic, hunt for bugs, and unravel riddles hidden in the code. Each level you solve 'unlocks' the next, with the difficulty increasing as you go.",
+    //   dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
+    //   team: "Team Size:  2 members",
+    //   rules: ["Language: C Programing", "Levels: 3"],
+    //   fee: " ₹60 per team",
+    //   registration:
+    //     "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
+    // },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 px-6 py-12">
-      <h1 className="text-4xl font-bold text-center mb-12 text-blue-700">
-        🎓 REVA University - CSA Tech & Media Fest 2025
-      </h1>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-gray-50 text-gray-800">
+      {/* Hero Section */}
+      <section className="text-center py-16 px-6 bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-b-[3rem] shadow-lg">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl font-extrabold mb-4"
+        >
+          REVA University
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="text-xl font-light tracking-wide"
+        >
+          CSA Tech & Media Fest 2025 ✨
+        </motion.p>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto">
-        {events.map((event) => (
-          <div
+      {/* Event Cards */}
+      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {events.map((event, index) => (
+          <motion.div
             key={event.id}
-            className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="backdrop-blur-lg bg-white/70 border border-gray-200 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
           >
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold text-blue-700 flex items-center gap-2 mb-1">
+            <div className="p-6 flex-1 overflow-y-auto max-h-[80vh]">
+              {/* Header */}
+              <h2 className="text-2xl font-semibold text-blue-700 flex items-center gap-2 mb-3">
                 <BookOpen className="w-6 h-6 text-blue-500" />
                 {event.name}
               </h2>
 
+              {event.category && (
+                <span className="inline-block text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-3">
+                  {event.category}
+                </span>
+              )}
+
               {event.tagline && (
-                <p className="italic text-gray-500 mb-4 text-sm">
+                <p className="text-sm italic text-gray-500 mb-3">
                   “{event.tagline}”
                 </p>
               )}
 
               {event.description && (
-                <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                <p className="text-gray-700 text-sm leading-relaxed mb-4">
                   {event.description}
                 </p>
               )}
 
-              <div className="space-y-1 mb-4">
-                <p className="flex items-center gap-2 text-gray-700">
-                  <CalendarDays className="w-5 h-5 text-blue-500" />
-                  {event.dateTime}
-                </p>
-                {event.faculty && event.faculty.length > 0 && (
-                  <div className="mt-3">
-                    <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                      <Users className="w-5 h-5 text-blue-500" />
-                      Faculty Coordinators
-                    </h3>
-                    <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
-                      {event.faculty.map((fac, i) => (
-                        <li key={i}>
-                          {fac.name} –{" "}
-                          <span className="text-gray-600">{fac.phone}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {event.student && event.student.length > 0 && (
-                  <div className="mt-3">
-                    <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                      <Users className="w-5 h-5 text-blue-500" />
-                      Students
-                    </h3>
-                    <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
-                      {event.student.map((stu, i) => (
-                        <li key={i}>
-                          {stu.name} –{" "}
-                          <span className="text-gray-600">{stu.phone}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {event.organizedBy && (
-                  <p className="flex items-center gap-2 text-gray-700">
-                    <Users className="w-5 h-5 text-blue-500" />
-                    <span>
-                      <strong>Organized by:</strong> {event.organizedBy}
-                    </span>
+              {/* Basic Info */}
+              <div className="text-gray-600 text-sm space-y-1">
+                {event.dateTime && (
+                  <p className="flex items-center gap-2">
+                    <CalendarDays className="w-4 h-4 text-blue-500" />
+                    {event.dateTime}
                   </p>
                 )}
-              </div>
-
-              {(event.objective || event.objectives) && (
-                <div className="mt-3">
-                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                    <PenTool className="w-5 h-5 text-blue-500" />
-                    Objective
-                  </h3>
-
-                  {Array.isArray(event.objective || event.objectives) ? (
-                    <ul className="list-disc ml-5 text-gray-700 space-y-1">
-                      {(event.objective || event.objectives).map((obj, i) => (
-                        <li key={i}>{obj}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-700">
-                      {event.objective || event.objectives}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {event.howToPlay && (
-                <div className="mt-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                    <ClipboardList className="w-5 h-5 text-blue-500" />
-                    How to Play
-                  </h3>
-                  <ul className="list-decimal ml-5 text-gray-700 space-y-1 text-sm">
-                    {event.howToPlay.map((step, i) => (
-                      <li key={i}>{step}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {event.rules && (
-                <div className="mt-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                    <ClipboardList className="w-5 h-5 text-blue-500" />
-                    Rules & Regulations
-                  </h3>
-                  <ul className="list-decimal ml-5 text-gray-700 space-y-1 text-sm">
-                    {event.rules.map((rule, i) => (
-                      <li key={i}>{rule}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {event.levels && (
-                <div className="mt-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                    <Layers className="w-5 h-5 text-blue-500" />
-                    Levels
-                  </h3>
-                  <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
-                    {event.levels.map((lvl, i) => (
-                      <li key={i}>{lvl}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {event.example && (
-                <div className="mt-4 bg-gray-100 p-3 rounded-lg font-mono text-sm text-gray-800 overflow-x-auto">
-                  <p className="mb-2 font-semibold text-gray-700">Example:</p>
-                  <pre>{event.example}</pre>
-                </div>
-              )}
-
-              {event.scoring && (
-                <div className="mt-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-800 mb-2">
-                    <ClipboardList className="w-5 h-5 text-blue-500" />
-                    Scoring Criteria
-                  </h3>
-                  <ul className="list-disc ml-5 text-gray-700 space-y-1 text-sm">
-                    {event.scoring.map((score, i) => (
-                      <li key={i}>{score}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="mt-4 text-sm text-gray-700 space-y-1">
+                {event.duration && (
+                  <p className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-blue-500" />
+                    Duration: {event.duration}
+                  </p>
+                )}
+                {event.organizedBy && (
+                  <p>
+                    <strong>Organized by:</strong> {event.organizedBy}
+                  </p>
+                )}
                 {event.team && (
                   <p>
                     <strong>Team:</strong> {event.team}
@@ -441,28 +363,250 @@ export default function Events() {
                     <strong>Eligibility:</strong> {event.eligibility}
                   </p>
                 )}
-                {event.duration && (
-                  <p>
-                    <strong>Duration:</strong> {event.duration}
-                  </p>
+              </div>
+
+              {/* Coordinators Section */}
+              {(event.faculty || event.student) && (
+                <div className="mt-6">
+                  <h3 className="text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                    <Users className="w-5 h-5 text-blue-600" />
+                    Event Coordinators
+                  </h3>
+
+                  {event.faculty && (
+                    <div className="mb-3 p-3 bg-blue-50/60 rounded-xl border border-blue-100">
+                      <h4 className="font-medium text-blue-700 mb-1">
+                        Faculty
+                      </h4>
+                      <ul className="ml-5 list-disc space-y-1 text-gray-700 text-sm">
+                        {event.faculty.map((f, i) => (
+                          <li key={i}>
+                            <span className="font-medium">{f.name}</span>{" "}
+                            <span className="text-gray-500">– {f.phone}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {event.student && (
+                    <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100">
+                      <h4 className="font-medium text-indigo-700 mb-1">
+                        Student
+                      </h4>
+                      <ul className="ml-5 list-disc space-y-1 text-gray-700 text-sm">
+                        {event.student.map((s, i) => (
+                          <li key={i}>
+                            <span className="font-medium">{s.name}</span>{" "}
+                            <span className="text-gray-500">– {s.phone}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Accordion Section */}
+              <div className="mt-5">
+                <button
+                  onClick={() => toggleEvent(event.id)}
+                  className="flex items-center justify-between w-full text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  <span>
+                    {openEvent === event.id
+                      ? "Hide Details"
+                      : "View More Details"}
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                      openEvent === event.id ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {openEvent === event.id && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.4 }}
+                    className="mt-4 text-sm text-gray-700 space-y-4"
+                  >
+                    {/* ✅ Objective (string or array) */}
+                    {event.objective && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <Target className="w-4 h-4 text-blue-500" />
+                          Objective
+                        </h4>
+                        {Array.isArray(event.objective) ? (
+                          <ul className="list-disc ml-5 space-y-1">
+                            {event.objective.map((obj, i) => (
+                              <li key={i}>{obj}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="ml-5">{event.objective}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* ✅ Objectives (array) */}
+                    {event.objectives && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <Lightbulb className="w-4 h-4 text-blue-500" />
+                          Objectives
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.objectives.map((obj, i) => (
+                            <li key={i}>{obj}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Activity Setup */}
+                    {event.activitySetup && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <ClipboardList className="w-4 h-4 text-blue-500" />
+                          Activity Setup
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {Object.entries(event.activitySetup).map(
+                            ([key, val], i) => (
+                              <li key={i}>
+                                <strong>{key}:</strong> {val}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Rules */}
+                    {event.rules && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <ClipboardList className="w-4 h-4 text-blue-500" />
+                          Rules
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.rules.map((rule, i) => (
+                            <li key={i}>{rule}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Levels */}
+                    {event.levels && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <Layers className="w-4 h-4 text-blue-500" />
+                          Levels
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.levels.map((lvl, i) => (
+                            <li key={i}>{lvl}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Evaluation */}
+                    {event.evaluation && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <PenTool className="w-4 h-4 text-blue-500" />
+                          Evaluation Criteria
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.evaluation.map((ev, i) => (
+                            <li key={i}>{ev}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ How To Play */}
+                    {event.howToPlay && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <PenTool className="w-4 h-4 text-blue-500" />
+                          How to Play
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.howToPlay.map((step, i) => (
+                            <li key={i}>{step}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Variations */}
+                    {event.variations && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <Lightbulb className="w-4 h-4 text-blue-500" />
+                          Variations
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.variations.map((v, i) => (
+                            <li key={i}>{v}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Scoring */}
+                    {event.scoring && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <ClipboardList className="w-4 h-4 text-blue-500" />
+                          Scoring
+                        </h4>
+                        <ul className="list-disc ml-5 space-y-1">
+                          {event.scoring.map((sc, i) => (
+                            <li key={i}>{sc}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* ✅ Example */}
+                    {event.example && (
+                      <div>
+                        <h4 className="font-semibold mb-1 flex items-center gap-1">
+                          <BookOpen className="w-4 h-4 text-blue-500" />
+                          Example
+                        </h4>
+                        <pre className="bg-gray-100 p-3 rounded-lg text-xs overflow-x-auto whitespace-pre-wrap">
+                          {event.example}
+                        </pre>
+                      </div>
+                    )}
+                  </motion.div>
                 )}
               </div>
             </div>
 
+            {/* Registration Button */}
             {event.registration && (
-              <div className="border-t border-gray-100 bg-gray-50 p-4 rounded-b-2xl flex justify-end">
+              <div className="border-t border-gray-100 bg-blue-50 p-4 rounded-b-3xl flex justify-end">
                 <a
                   href={event.registration}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-blue-700 transition-all"
+                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition-all"
                 >
                   Register Now
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
