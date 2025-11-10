@@ -11,7 +11,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-export default function CSAEventsPage() {
+export default function Events() {
   const events = [
     {
       id: 1,
