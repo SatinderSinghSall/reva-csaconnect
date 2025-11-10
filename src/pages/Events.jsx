@@ -82,10 +82,16 @@ export default function Events() {
     {
       id: 3,
       name: "AdVerse – Product Ad Shoot",
+      faculty: [
+        { name: "Prof. Dhanush N", phone: "7829791752" },
+        { name: "Prof.Likith S", phone: "87789 54340" },
+        { name: "Prof.Anjali", phone: "95622 2763" },
+        { name: "Dr.Archana", phone: "N/A" },
+      ],
       category: "Film & Media Event",
       description:
         "Participants will create a 30-second product advertisement showcasing creativity, storytelling, and cinematography skills.",
-      dateTime: "19th November 2025 | 9:30 AM – 12:00 Noon",
+      dateTime: "19th November 2025 | 9:00 AM – 3:00 Noon",
       duration: "2 hours",
       team: "2 members per team",
       fee: "₹50",
@@ -106,6 +112,12 @@ export default function Events() {
     {
       id: 4,
       name: "CineMorph – Short Movie Challenge",
+      faculty: [
+        { name: "Prof. Dhanush N", phone: "7829791752" },
+        { name: "Prof.Likith S", phone: "87789 54340" },
+        { name: "Prof.Anjali", phone: "95622 2763" },
+        { name: "Dr.Archana", phone: "N/A" },
+      ],
       category: "Film & 3D Event (For 3rd Year Students)",
       description:
         "Participants must produce a 1–2 minute short movie based on topics announced on the spot. The challenge encourages creativity, storytelling, and technical skills in filmmaking.",
@@ -166,6 +178,7 @@ export default function Events() {
     {
       id: 6,
       name: "Code Karaoke",
+      dateTime: "20th November 2025 | 12:00 PM – 2:00 Noon",
       category: "Fun Tech Activity",
       description:
         "Participants are given a short piece of code (any language). They must sing, rap, or dramatically narrate it — like karaoke — while the audience guesses the output or what the code does.",
@@ -209,6 +222,12 @@ export default function Events() {
       id: 7,
       name: "3D Art & Design",
       category: "3D Art & Design",
+      faculty: [
+        { name: "Prof. Dhanush N", phone: "7829791752" },
+        { name: "Prof.Likith S", phone: "87789 54340" },
+        { name: "Prof.Anjali", phone: "95622 2763" },
+        { name: "Dr.Archana", phone: "NA" },
+      ],
       description:
         "Create a 3D model in Autodesk Maya based on the given theme. Participants must demonstrate modelling, texturing, and lighting within the given time.",
       dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
@@ -223,6 +242,8 @@ export default function Events() {
         "Submission format: Rendered image (HD) and Maya project file (.fbx & .mb).",
         "Judging criteria: Model accuracy, detailing, lighting, and presentation.",
       ],
+      registration:
+        "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
 
     {
