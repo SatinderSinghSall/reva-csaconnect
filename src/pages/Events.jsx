@@ -4,8 +4,6 @@ import {
   Users,
   BookOpen,
   ClipboardList,
-  Award,
-  FileText,
   Layers,
   PenTool,
   ExternalLink,
