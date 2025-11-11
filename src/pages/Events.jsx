@@ -62,6 +62,7 @@ export default function Events() {
         "Level 6: The Puzzle of Pieces",
         "Level 7: The Final Codebreaker",
       ],
+      registration: "https://forms.gle/KWLGqy7WrzeTmkPh8",
     },
 
     {
