@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CalendarDays,
   Users,
@@ -14,9 +14,37 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+function parseEventDate(dateTime) {
+  try {
+    const [datePart, timePartRaw] = dateTime.split("|").map((x) => x.trim());
+    const cleanedDate = datePart.replace(/(\d+)(st|nd|rd|th)/, "$1");
+    const startTime = timePartRaw.split("–")[0].trim();
+    const finalString = `${cleanedDate} ${startTime}`;
+    return new Date(finalString);
+  } catch {
+    return null;
+  }
+}
+
+function getCountdown(eventDate, now) {
+  const diff = eventDate - now;
+  if (diff <= 0) return { over: true };
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+  return { over: false, days, hours, minutes, seconds };
+}
+
 export default function Events() {
   const [openEvent, setOpenEvent] = useState(null);
   const toggleEvent = (id) => setOpenEvent(openEvent === id ? null : id);
+
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const events = [
     {
@@ -256,21 +284,6 @@ export default function Events() {
       registration:
         "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
     },
-
-    // {
-    //   id: 8,
-    //   name: "Code2Unlock",
-    //   category: "Code2Unlock",
-    //   organizedBy: "AI-IOT Club Presents",
-    //   description:
-    //     "The AI-IOT Club ,Department of Computer Science and Applications (CSA) at Reva University is thrilled to launch Code to Unlock – a fast-paced, puzzle-based C programming competition! You and your partner will race against the clock to solve three levels of clever C-based challenges. You'll need to trace logic, hunt for bugs, and unravel riddles hidden in the code. Each level you solve 'unlocks' the next, with the difficulty increasing as you go.",
-    //   dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
-    //   team: "Team Size:  2 members",
-    //   rules: ["Language: C Programing", "Levels: 3"],
-    //   fee: " ₹60 per team",
-    //   registration:
-    //     "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
-    // },
   ];
 
   return (
@@ -330,20 +343,53 @@ export default function Events() {
                 </p>
               )}
 
-              {/* Basic Info */}
+              {/* BASIC INFO */}
               <div className="text-gray-600 text-sm space-y-1">
-                {event.dateTime && (
-                  <p className="flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4 text-blue-500" />
-                    {event.dateTime}
-                  </p>
-                )}
+                {/* DATE + COUNTDOWN ADDED HERE */}
+                {event.dateTime &&
+                  (() => {
+                    const eventDate = parseEventDate(event.dateTime);
+                    const countdown = eventDate
+                      ? getCountdown(eventDate, now)
+                      : null;
+
+                    return (
+                      <div className="flex flex-col gap-1">
+                        <p className="flex items-center gap-2">
+                          <CalendarDays className="w-4 h-4 text-blue-500" />
+                          {event.dateTime}
+                        </p>
+
+                        {countdown && !countdown.over && (
+                          <div className="text-xs flex gap-2 flex-wrap">
+                            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                              {countdown.days} days left
+                            </span>
+
+                            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                              {String(countdown.hours).padStart(2, "0")}h :
+                              {String(countdown.minutes).padStart(2, "0")}m :
+                              {String(countdown.seconds).padStart(2, "0")}s
+                            </span>
+                          </div>
+                        )}
+
+                        {countdown && countdown.over && (
+                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                            Event Started
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })()}
+
                 {event.duration && (
                   <p className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-blue-500" />
                     Duration: {event.duration}
                   </p>
                 )}
+
                 {event.organizedBy && (
                   <p>
                     <strong>Organized by:</strong> {event.organizedBy}
@@ -366,7 +412,7 @@ export default function Events() {
                 )}
               </div>
 
-              {/* Coordinators Section */}
+              {/* Coordinators */}
               {(event.faculty || event.student) && (
                 <div className="mt-6">
                   <h3 className="text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
@@ -433,7 +479,7 @@ export default function Events() {
                     transition={{ duration: 0.4 }}
                     className="mt-4 text-sm text-gray-700 space-y-4"
                   >
-                    {/* ✅ Objective (string or array) */}
+                    {/* ✅ Objective */}
                     {event.objective && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -452,7 +498,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Objectives (array) */}
+                    {/* Objectives */}
                     {event.objectives && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -467,7 +513,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Activity Setup */}
+                    {/* Activity Setup */}
                     {event.activitySetup && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -486,7 +532,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Rules */}
+                    {/* Rules */}
                     {event.rules && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -501,7 +547,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Levels */}
+                    {/* Levels */}
                     {event.levels && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -516,7 +562,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Evaluation */}
+                    {/* Evaluation */}
                     {event.evaluation && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -531,7 +577,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ How To Play */}
+                    {/* How To Play */}
                     {event.howToPlay && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -546,7 +592,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Variations */}
+                    {/* Variations */}
                     {event.variations && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -561,7 +607,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Scoring */}
+                    {/* Scoring */}
                     {event.scoring && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
@@ -576,7 +622,7 @@ export default function Events() {
                       </div>
                     )}
 
-                    {/* ✅ Example */}
+                    {/* Example */}
                     {event.example && (
                       <div>
                         <h4 className="font-semibold mb-1 flex items-center gap-1">
