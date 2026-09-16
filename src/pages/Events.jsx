@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   ArrowUpRight,
   CalendarDays,
-  Check,
-  ChevronDown,
   Clock3,
   Code2,
   ExternalLink,
@@ -11,7 +9,6 @@ import {
   Layers3,
   Palette,
   ShieldCheck,
-  Sparkles,
   Trophy,
   Users,
   WandSparkles,
