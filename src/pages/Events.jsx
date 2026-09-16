@@ -1,661 +1,995 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
+  ArrowUpRight,
   CalendarDays,
-  Users,
-  BookOpen,
-  ClipboardList,
-  Layers,
-  PenTool,
-  ExternalLink,
+  Check,
   ChevronDown,
-  Clock,
-  Target,
-  Lightbulb,
+  Clock3,
+  Code2,
+  ExternalLink,
+  Film,
+  Layers3,
+  Palette,
+  ShieldCheck,
+  Sparkles,
+  Trophy,
+  Users,
+  WandSparkles,
+  GraduationCap,
+  X,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-function parseEventDate(dateTime) {
-  try {
-    const [datePart, timePartRaw] = dateTime.split("|").map((x) => x.trim());
-    const cleanedDate = datePart.replace(/(\d+)(st|nd|rd|th)/, "$1");
-    const startTime = timePartRaw.split("–")[0].trim();
-    const finalString = `${cleanedDate} ${startTime}`;
-    return new Date(finalString);
-  } catch {
-    return null;
-  }
+/*
+  REVA University — CSA Tech & Media Fest 2026
+  Event data below is taken from the supplied Techfusion link details document.
+  Fields not specified in the source are intentionally left unspecified.
+*/
+
+const events = [
+  {
+    id: 1,
+    title: "Treasure Hunt: Unlock 2.0",
+    shortTitle: "Unlock 2.0",
+    category: "TECH",
+    icon: Layers3,
+    accent: "from-violet-500 to-fuchsia-500",
+    date: "2026-10-05",
+    startTime: "11:30",
+    endTime: "13:30",
+    dateLabel: "05 October 2026",
+    timeLabel: "11:30 AM – 1:30 PM",
+    coordinator: "Prof. Aashitha",
+    fee: "₹150",
+    teamSize: "3–4 members per team",
+    registration: "https://forms.gle/SSjWdLWVHEvNlx1A8",
+    registrationEnd: "30 September 2026",
+    prize: "1st & 2nd Prize — Cash Prize + E-Certificate",
+    students: [
+      ["Raghul S", "99011 59016"],
+      ["Ahsin Nair", "72279 68368"],
+      ["Parth Mehta", "93228 15748"],
+    ],
+  },
+  {
+    id: 2,
+    title: "Pixel Rush: The Ultimate Design Challenge",
+    shortTitle: "Pixel Rush",
+    category: "DESIGN",
+    icon: Palette,
+    accent: "from-cyan-500 to-blue-600",
+    date: "2026-10-05",
+    startTime: null,
+    endTime: null,
+    dateLabel: "05 October 2026",
+    timeLabel: "Time not specified",
+    coordinator: "Prof. Dhanush and Prof. Aarathi",
+    fee: "₹100",
+    teamSize: "1 member + 1 junior optional",
+    registration: "https://forms.gle/xiHbG9Hrpf5787cH9",
+    registrationEnd: "30 September 2026",
+    prize: "Winner & Runner-up — Cash Prize + E-Certificate",
+    students: [
+      ["Darshan", "7483 928 470"],
+      ["Summeth", "88671 58942"],
+    ],
+  },
+  {
+    id: 3,
+    title: "Techtangle – The Ultimate Tech Puzzle Challenge",
+    shortTitle: "Techtangle",
+    category: "TECH",
+    icon: Code2,
+    accent: "from-emerald-400 to-teal-600",
+    date: "2026-10-06",
+    startTime: "11:30",
+    endTime: "13:30",
+    dateLabel: "06 October 2026",
+    timeLabel: "11:30 AM – 1:30 PM",
+    coordinator: "Prof. Karthika",
+    fee: "₹100",
+    teamSize: "2–3 members per team",
+    registration: "https://forms.gle/zhuvWnFP4HsGvXTW9",
+    registrationEnd: "30 September 2026",
+    prize: "Winner & Runner-up — Cash Prize + E-Certificate",
+    students: [
+      ["Kundan", "62029 72050"],
+      ["Pavithra", "8668139344"],
+    ],
+  },
+  {
+    id: 4,
+    title: "One Minute Movie Challenge",
+    shortTitle: "One Minute Movie",
+    category: "MEDIA",
+    icon: Film,
+    accent: "from-orange-400 to-rose-500",
+    date: "2026-10-06",
+    startTime: null,
+    endTime: null,
+    dateLabel: "06 October 2026",
+    timeLabel: "Time not specified",
+    coordinator: "Prof. Dhanush and Prof. Aarathi",
+    fee: "₹150",
+    teamSize: "2–4 members per team",
+    registration: "https://forms.gle/xiHbG9Hrpf5787cH9",
+    registrationEnd: "30 September 2026",
+    prize: "1st & 2nd Prize — Cash Prize + E-Certificate",
+    students: [
+      ["Darshan", "7483 928 470"],
+      ["Summeth", "88671 58942"],
+    ],
+  },
+  {
+    id: 5,
+    title: "Prompt Engineering Quest",
+    shortTitle: "Prompt Engineering",
+    category: "AI",
+    icon: WandSparkles,
+    accent: "from-pink-500 to-violet-600",
+    date: "2026-10-07",
+    startTime: "11:30",
+    endTime: "13:30",
+    dateLabel: "07 October 2026",
+    timeLabel: "11:30 AM – 1:30 PM",
+    coordinator: "Dr. Lakshmi J V N, Dr. Deeba, and Dr. Pradeepa",
+    organiser:
+      "YUKTAI – AI Club, School of Computer Science and Applications (CSA), REVA University",
+    fee: "₹100 per team",
+    teamSize: "2 members per team",
+    registration:
+      "https://docs.google.com/forms/d/e/1FAIpQLSfXGErHv45mbT0S_jDPveN9LqynkTIOvIeRo49kE6xT8tQmQQ/viewform?usp=publish-editor",
+    registrationEnd: "30 September 2026",
+    prize: "Cash Prize + E-Certificate; 2nd Prize — Cash Prize + E-Certificate",
+    students: [
+      ["Nandini Pandey", "+91-9599829054"],
+      ["Roshini Singh", "7019061818"],
+      ["Abrar", "+91-8105399680"],
+    ],
+  },
+  {
+    id: 6,
+    title: "CodeVerse – A Technical Coding Challenge",
+    shortTitle: "CodeVerse",
+    category: "CODING",
+    icon: Code2,
+    accent: "from-blue-500 to-indigo-600",
+    date: "2026-10-07",
+    startTime: "13:30",
+    endTime: "15:30",
+    dateLabel: "07 October 2026",
+    timeLabel: "1:30 PM – 3:30 PM",
+    coordinator: "Prof. Padmavathi and Prof. Anitha",
+    fee: "₹100",
+    teamSize: "2 members per team",
+    registration: "https://forms.gle/mKc9Yyj1XbEbXEkv9",
+    registrationEnd: "30 September 2026",
+    prize: "1st & 2nd Prize — Cash Prize + E-Certificate",
+    students: [
+      ["Poorvaj B R", "9019135749"],
+      ["Anjana", "99864 78879"],
+      ["Narmatha", "98451 06461"],
+    ],
+  },
+  {
+    id: 7,
+    title: "Workshop: Foundations of Offensive Security (Phase 2)",
+    shortTitle: "Offensive Security",
+    category: "WORKSHOP",
+    icon: ShieldCheck,
+    accent: "from-amber-400 to-orange-600",
+    date: "2026-10-07",
+    startTime: null,
+    endTime: null,
+    dateLabel: "07 October 2026",
+    timeLabel: "Time not specified",
+    coordinator: "Prof. Vijaya Kumar",
+    fee: "NIL",
+    teamSize: "2 members per team",
+    registration: null,
+    registrationEnd: "30 September 2026",
+    prize: null,
+    students: [["Mr. Abhishek", "9611346327"]],
+  },
+];
+
+const categoryLabels = [
+  "ALL",
+  "TECH",
+  "CODING",
+  "AI",
+  "DESIGN",
+  "MEDIA",
+  "WORKSHOP",
+];
+
+function getEventDate(event) {
+  if (!event.startTime) return null;
+  return new Date(`${event.date}T${event.startTime}:00`);
 }
 
-function getCountdown(eventDate, now) {
-  const diff = eventDate - now;
-  if (diff <= 0) return { over: true };
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-  return { over: false, days, hours, minutes, seconds };
+function getCountdown(target, now) {
+  const diff = target.getTime() - now.getTime();
+  if (diff <= 0) return null;
+
+  return {
+    days: Math.floor(diff / 86400000),
+    hours: Math.floor((diff / 3600000) % 24),
+    minutes: Math.floor((diff / 60000) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  };
+}
+
+function formatDay(dateString) {
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+  }).format(new Date(`${dateString}T00:00:00`));
+}
+
+function EventIcon({ event, className = "h-5 w-5" }) {
+  const Icon = event.icon;
+  return <Icon className={className} />;
+}
+
+function Countdown({ event, now }) {
+  const target = getEventDate(event);
+  if (!target) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60">
+        <Clock3 className="h-3.5 w-3.5" />
+        Time TBA
+      </span>
+    );
+  }
+
+  const countdown = getCountdown(target, now);
+  if (!countdown) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/70">
+        Event started
+      </span>
+    );
+  }
+
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {[
+        [countdown.days, "D"],
+        [countdown.hours, "H"],
+        [countdown.minutes, "M"],
+        [countdown.seconds, "S"],
+      ].map(([value, label]) => (
+        <div
+          key={label}
+          className="min-w-[42px] rounded-xl border border-white/10 bg-white/[0.06] px-2 py-1.5 text-center backdrop-blur"
+        >
+          <div className="font-mono text-sm font-semibold text-white">
+            {String(value).padStart(2, "0")}
+          </div>
+          <div className="text-[9px] font-medium tracking-widest text-white/40">
+            {label}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function Events() {
-  const [openEvent, setOpenEvent] = useState(null);
-  const toggleEvent = (id) => setOpenEvent(openEvent === id ? null : id);
-
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [now, setNow] = useState(new Date());
+
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  const events = [
-    {
-      id: 1,
-      name: "Treasure Hunt – Unlock",
-      organizedBy: "AI-IOT Club and Software Coding Club",
-      dateTime: "17th November 2025 | 10:00 AM – 12:00 PM",
-      faculty: [
-        { name: "Prof. Farhanaaz", phone: "9902329068" },
-        { name: "Prof. Aashita Paliwal", phone: "9205713611" },
-      ],
-      objective: [
-        "Enhance logical thinking, problem-solving, and teamwork through a blend of treasure hunt and coding challenges.",
-        "Collaborate to decode encrypted clues, write efficient code blocks, and navigate through logical stages simulating real-world problem-solving.",
-        "Encourage technical skills, analytical abilities, and creativity to decode clues, solve programming puzzles, and reach the final destination.",
-      ],
-      team: "3–4 members",
-      fee: "₹100 per team",
-      rules: [
-        "Each team must consist of 3–4 members.",
-        "Teams may not skip any level — every clue and code piece is essential for the final challenge.",
-        "Organizers and judges will be present at key locations to verify progress.",
-        "The hunt is time-bound — the team that completes all levels first will be declared the winner.",
-        "If no team completes all levels, the winner will be decided based on how far each team progressed and their total completion time.",
-        "Tampering with other teams’ systems or data will result in immediate disqualification.",
-        "Collaboration between teams is strictly prohibited.",
-        "Any attempt to peek, copy, or share answers will lead to disqualification.",
-        "Physical or verbal disturbance to other teams or organizers is not tolerated.",
-        "Teams must follow all instructions given by event coordinators at each level.",
-        "Judges’ decisions are final and binding.",
-        "Teams must not damage, misplace, or write on any physical clues, QR sheets, or code printouts.",
-        "To win, a team must collect all code pieces from every level.",
-        "All code pieces must be correctly combined to form the final program.",
-        "The final program must be successfully compiled and run to reveal the final clue or message.",
-        "The first team to complete all levels and execute the final program correctly will be declared the champions.",
-      ],
-      levels: [
-        "Level 1: The Database Awakens",
-        "Level 2: The Binary Message",
-        "Level 3: The Broken Code",
-        "Level 4: The Hidden Bot",
-        "Level 5: The Form of Truth",
-        "Level 6: The Puzzle of Pieces",
-        "Level 7: The Final Codebreaker",
-      ],
-      registration: "https://forms.gle/KWLGqy7WrzeTmkPh8",
-    },
+  useEffect(() => {
+    if (!selectedEvent) return;
 
-    {
-      id: 2,
-      name: "Film in a Frame – Minimalistic Poster Design",
-      category: "Design & Media Event",
-      tagline: "Where Ideas Take Shape",
-      description:
-        "Participants are required to design a minimalistic poster that conveys a strong visual message using simplicity, space, and creativity. The focus is on clean design, color harmony, and impactful typography.",
-      dateTime: "18th November 2025 | 9:30 AM – 11:30 AM",
-      team: "Individual participation (1 member)",
-      fee: "₹30",
-      eligibility: "Any CSA student and 1st Semester B.Sc (M&A) mandatory",
-      rules: [
-        "Theme will be announced on the spot.",
-        "Time limit is strictly 2 hours.",
-        "Participants must use Adobe Photoshop or Illustrator.",
-        "Only minimalistic design principles should be followed (no cluttered visuals).",
-        "Final submission must be in JPEG or PNG format (A3 size, 300 DPI).",
-        "Evaluation will be based on creativity, concept clarity, layout, and visual balance.",
-      ],
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
-    },
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedEvent(null);
+    };
 
-    {
-      id: 3,
-      name: "AdVerse – Product Ad Shoot",
-      faculty: [
-        { name: "Prof. Dhanush N", phone: "7829791752" },
-        { name: "Prof.Likith S", phone: "87789 54340" },
-        { name: "Prof.Anjali", phone: "95622 2763" },
-        { name: "Dr.Archana", phone: "N/A" },
-      ],
-      category: "Film & Media Event",
-      description:
-        "Participants will create a 30-second product advertisement showcasing creativity, storytelling, and cinematography skills.",
-      dateTime: "19th November 2025 | 9:00 AM – 3:00 Noon",
-      duration: "2 hours",
-      team: "2 members per team",
-      fee: "₹50",
-      eligibility: "Any CSA student and 2nd Year B.Sc (M&A) mandatory",
-      rules: [
-        "Total ad duration: 30 seconds (±5 seconds tolerance).",
-        "Product to be featured revealed on the spot.",
-        "Entire shoot and edit must be completed within 2 hours.",
-        "Participants can use mobile phones or cameras for shooting.",
-        "Basic editing allowed (music, color correction, text, transitions).",
-        "Final output format: MP4, 1080p resolution.",
-        "Evaluation based on creativity, cinematography, editing, and brand message clarity.",
-      ],
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
-    },
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
 
-    {
-      id: 4,
-      name: "CineMorph – Short Movie Challenge",
-      faculty: [
-        { name: "Prof. Dhanush N", phone: "7829791752" },
-        { name: "Prof.Likith S", phone: "87789 54340" },
-        { name: "Prof.Anjali", phone: "95622 2763" },
-        { name: "Dr.Archana", phone: "N/A" },
-      ],
-      category: "Film & 3D Event (For 3rd Year Students)",
-      description:
-        "Participants must produce a 1–2 minute short movie based on topics announced on the spot. The challenge encourages creativity, storytelling, and technical skills in filmmaking.",
-      dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
-      eligibility:
-        "Open to all CSA students | 3rd Year B.Sc (Media & Animation) students mandatory",
-      team: "Individual or group participation (max 3 members)",
-      duration: "6 hours",
-      rules: [
-        "Topic will be announced on the spot.",
-        "Total video duration must be between 1–2 minutes.",
-        "Participants can use any device for filming (camera or mobile).",
-        "Editing tools of choice allowed (Adobe Premiere, DaVinci Resolve, etc.).",
-        "Original content only – plagiarism or reused clips not allowed.",
-        "Submission format: MP4, 1080p resolution.",
-        "Judging based on creativity, storytelling, cinematography, and editing.",
-      ],
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
-    },
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [selectedEvent]);
 
-    {
-      id: 5,
-      name: "CodeToUnlock",
-      category: "Technical Coding Event",
-      organizedBy: "CSA Club",
-      dateTime: "20th November 2025 | 9:30 AM – 11:30 AM",
-      faculty: [
-        { name: "Prof. Pooja N G", phone: "9742269635" },
-        { name: "Prof. Padmavathi", phone: "8971952081" },
-      ],
-      student: [
-        { name: "Anjana", phone: "9986478879" },
-        { name: "Arathi", phone: "9886999401" },
-      ],
-      objective:
-        "“CodeToUnlock” is a coding-based technical event designed to test participants’ logical thinking and programming knowledge. The event challenges students to analyze incomplete codes, identify missing logic, and reconstruct the correct program flow. It aims to enhance problem-solving, debugging, and code interpretation skills in an engaging and competitive environment.",
-      team: "2 members per team",
-      fee: "₹50 per team",
-      rules: [
-        "The event consists of two rounds – Code Completion and Logic Reconstruction.",
-        "Round 1: Programs with missing lines and multiple-choice options.",
-        "Round 2: Partial code and output provided; participants must deduce and complete the logic.",
-        "Language allowed: C.",
-        "Use of internet-enabled devices or external materials is prohibited.",
-        "Time limits will be announced for each round.",
-        "Late submissions will not be accepted.",
-        "Judges’ decisions are final and binding.",
-      ],
-      evaluation: [
-        "Accuracy and correctness",
-        "Logical clarity",
-        "Code efficiency",
-        "Output validation",
-      ],
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSfhChWhc_jeouKw4iU-h4evMKkCcvySHcwnWqxbxonP-1gmhA/viewform",
-    },
+  const filteredEvents = useMemo(
+    () =>
+      selectedCategory === "ALL"
+        ? events
+        : events.filter((event) => event.category === selectedCategory),
+    [selectedCategory],
+  );
 
-    {
-      id: 6,
-      name: "Code Karaoke",
-      dateTime: "20th November 2025 | 12:00 PM – 2:00 Noon",
-      category: "Fun Tech Activity",
-      description:
-        "Participants are given a short piece of code (any language). They must sing, rap, or dramatically narrate it — like karaoke — while the audience guesses the output or what the code does.",
-      duration: "30–45 Minutes",
-      team: "2 members per team",
-      fee: "₹50 per team",
-      eligibility: "Open to all students",
-      activitySetup: {
-        groupSize: "Small teams or individuals",
-        time: "30–45 minutes",
-        materials: "Projector / printed code snippets",
-      },
-      objectives: [
-        "Improve familiarity with programming syntax.",
-        "Understand and visualize code flow.",
-        "Reduce fear and make coding fun.",
-        "Encourage clear and confident explanation skills.",
-      ],
-      howToPlay: [
-        "Select a simple code snippet.",
-        "One participant performs the code (reads dramatically / sings / rap style).",
-        "Others guess the output or function.",
-        "Points awarded for correct explanation and best performance.",
-      ],
-      example: `for i in range(1, 6):\n    print('Hello 🎤', i)\n\nPerform like: “Helloooo number oneee… Helloooo number twoooo…” 🎶`,
-      variations: [
-        "Rap Code – Perform to a beat.",
-        "Whisper Code – Narrate dramatically like a thriller.",
-        "Opera Code – Sing code in opera voice 🎶.",
-        "Speed Round – Read code fast and stay accurate.",
-      ],
-      scoring: [
-        "Best Code Explanation – 3 Points",
-        "Best Performance – 2 Points",
-        "Participation Bonus – 1 Point",
-      ],
-      registration: "https://forms.gle/D2FpczvzVQXWWCqcA",
-    },
-
-    {
-      id: 7,
-      name: "3D Art & Design",
-      category: "3D Art & Design",
-      faculty: [
-        { name: "Prof. Dhanush N", phone: "7829791752" },
-        { name: "Prof.Likith S", phone: "87789 54340" },
-        { name: "Prof.Anjali", phone: "95622 2763" },
-        { name: "Dr.Archana", phone: "NA" },
-      ],
-      description:
-        "Create a 3D model in Autodesk Maya based on the given theme. Participants must demonstrate modelling, texturing, and lighting within the given time.",
-      dateTime: "21st November 2025 | 9:00 AM – 3:00 PM",
-      eligibility: "CSA Students",
-      duration: "9:00 AM – 3:00 PM",
-      team: "Individual Participation",
-      rules: [
-        "Theme will be announced on the spot.",
-        "Software: Autodesk Maya & Substance Painter (Texturing & Lighting mandatory).",
-        "Time limit: 6 hours.",
-        "Only in-built tools and materials allowed (no pre-made assets).",
-        "Submission format: Rendered image (HD) and Maya project file (.fbx & .mb).",
-        "Judging criteria: Model accuracy, detailing, lighting, and presentation.",
-      ],
-      registration:
-        "https://docs.google.com/forms/d/e/1FAIpQLSdv0mCipIcB5CBYJvrRDGJ0kCbDWWTPFD2ObkkNAifpgm06mg/viewform?usp=dialog",
-    },
-  ];
+  const registrationOpen =
+    now >= new Date("2026-09-05T00:00:00") &&
+    now <= new Date("2026-09-30T23:59:59");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-gray-50 text-gray-800">
-      {/* Hero Section */}
-      <section className="text-center py-16 px-6 bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-b-[3rem] shadow-lg">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold mb-4"
-        >
-          REVA University
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="text-xl font-light tracking-wide"
-        >
-          CSA Tech & Media Fest 2025 ✨
-        </motion.p>
-      </section>
+    <main className="min-h-screen overflow-hidden bg-[#050507] text-white selection:bg-violet-500/30">
+      {/* Premium ambient layer */}
+      <div className="pointer-events-none fixed inset-0 -z-0 overflow-hidden">
+        <div className="absolute left-[15%] top-[-16rem] h-[38rem] w-[38rem] rounded-full bg-violet-700/15 blur-[140px]" />
+        <div className="absolute right-[-14rem] top-[25rem] h-[34rem] w-[34rem] rounded-full bg-cyan-500/10 blur-[140px]" />
+        <div className="absolute bottom-[-18rem] left-[20%] h-[36rem] w-[36rem] rounded-full bg-fuchsia-600/10 blur-[150px]" />
+        <div
+          className="absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-violet-950/10 to-transparent" />
+      </div>
 
-      {/* Event Cards */}
-      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {events.map((event, index) => (
-          <motion.div
-            key={event.id}
-            initial={{ opacity: 0, y: 50 }}
+      <section className="relative z-10 mx-auto max-w-[1440px] px-5 pb-16 pt-4 sm:px-8 sm:pt-5 lg:px-12">
+        {/* Fest identity row — intentionally compact so it sits cleanly below the app navbar */}
+        <div className="mb-10 flex items-center justify-between gap-4 pt-2 sm:mb-14">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.025] px-3 py-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-300 shadow-[0_0_12px_rgba(196,181,253,.9)]" />
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/45">
+              CSA Tech & Media Fest 2026
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span
+              className={`hidden items-center gap-2 rounded-full border px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] sm:inline-flex ${
+                registrationOpen
+                  ? "border-emerald-400/15 bg-emerald-400/[0.06] text-emerald-200/65"
+                  : "border-white/10 bg-white/[0.03] text-white/30"
+              }`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  registrationOpen
+                    ? "bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.8)]"
+                    : "bg-white/25"
+                }`}
+              />
+              {registrationOpen ? "Registration open" : "Registration closed"}
+            </span>
+            <span className="rounded-full border border-white/[0.08] bg-white/[0.025] px-3.5 py-2 text-[9px] font-medium tracking-[0.12em] text-white/30">
+              05–07 OCT · 2026
+            </span>
+          </div>
+        </div>
+
+        <nav className="mb-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] shadow-2xl shadow-violet-950/30">
+              <GraduationCap className="h-5 w-5 text-violet-300" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold tracking-tight">
+                REVA University
+              </p>
+              <p className="text-[10px] uppercase tracking-[0.25em] text-white/35">
+                School of Computer Science & Applications
+              </p>
+            </div>
+          </div>
+          <span className="hidden rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/50 sm:block">
+            OCT 05–07 · 2026
+          </span>
+        </nav>
+
+        {/* Hero */}
+        <div className="grid items-end gap-12 lg:grid-cols-[minmax(0,1.25fr)_390px] xl:gap-20">
+          <div>
+            <motion.h1
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05, duration: 0.65 }}
+              className="max-w-4xl text-[3.8rem] font-semibold leading-[0.9] tracking-[-0.065em] sm:text-7xl md:text-[5.8rem] lg:text-[6.8rem]"
+            >
+              Where ideas
+              <br />
+              <span className="text-white">become</span>{" "}
+              <span className="bg-gradient-to-r from-violet-300 via-fuchsia-200 to-cyan-300 bg-clip-text text-transparent">
+                experiences.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.13, duration: 0.65 }}
+              className="mt-8 max-w-2xl text-sm leading-7 text-white/45 sm:text-base sm:leading-8"
+            >
+              Seven curated challenges and experiences across technology, AI,
+              coding, design, media and cybersecurity — all happening at REVA
+              University.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-8 flex flex-wrap gap-2"
+            >
+              <HeroStat value="07" label="Events" />
+              <HeroStat value="03" label="Fest days" />
+              <HeroStat value="30 SEP" label="Reg. closes" />
+            </motion.div>
+          </div>
+
+          {/* Schedule card */}
+          <motion.aside
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="backdrop-blur-lg bg-white/70 border border-gray-200 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+            transition={{ delay: 0.18, duration: 0.7 }}
+            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-5 shadow-2xl shadow-black/30 backdrop-blur-xl"
           >
-            <div className="p-6 flex-1 overflow-y-auto max-h-[80vh]">
-              {/* Header */}
-              <h2 className="text-2xl font-semibold text-blue-700 flex items-center gap-2 mb-3">
-                <BookOpen className="w-6 h-6 text-blue-500" />
-                {event.name}
-              </h2>
-
-              {event.category && (
-                <span className="inline-block text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-3">
-                  {event.category}
-                </span>
-              )}
-
-              {event.tagline && (
-                <p className="text-sm italic text-gray-500 mb-3">
-                  “{event.tagline}”
-                </p>
-              )}
-
-              {event.description && (
-                <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                  {event.description}
-                </p>
-              )}
-
-              {/* BASIC INFO */}
-              <div className="text-gray-600 text-sm space-y-1">
-                {/* DATE + COUNTDOWN ADDED HERE */}
-                {event.dateTime &&
-                  (() => {
-                    const eventDate = parseEventDate(event.dateTime);
-                    const countdown = eventDate
-                      ? getCountdown(eventDate, now)
-                      : null;
-
-                    return (
-                      <div className="flex flex-col gap-1">
-                        <p className="flex items-center gap-2">
-                          <CalendarDays className="w-4 h-4 text-blue-500" />
-                          {event.dateTime}
-                        </p>
-
-                        {countdown && !countdown.over && (
-                          <div className="text-xs flex gap-2 flex-wrap">
-                            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                              {countdown.days} days left
-                            </span>
-
-                            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-                              {String(countdown.hours).padStart(2, "0")}h :
-                              {String(countdown.minutes).padStart(2, "0")}m :
-                              {String(countdown.seconds).padStart(2, "0")}s
-                            </span>
-                          </div>
-                        )}
-
-                        {countdown && countdown.over && (
-                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
-                            Event Started
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })()}
-
-                {event.duration && (
-                  <p className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-blue-500" />
-                    Duration: {event.duration}
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-violet-500/15 blur-3xl" />
+            <div className="relative">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">
+                    Fest schedule
                   </p>
-                )}
-
-                {event.organizedBy && (
-                  <p>
-                    <strong>Organized by:</strong> {event.organizedBy}
-                  </p>
-                )}
-                {event.team && (
-                  <p>
-                    <strong>Team:</strong> {event.team}
-                  </p>
-                )}
-                {event.fee && (
-                  <p>
-                    <strong>Fee:</strong> {event.fee}
-                  </p>
-                )}
-                {event.eligibility && (
-                  <p>
-                    <strong>Eligibility:</strong> {event.eligibility}
-                  </p>
-                )}
+                  <p className="mt-1 text-xs text-white/55">October 2026</p>
+                </div>
+                <CalendarDays className="h-4 w-4 text-white/25" />
               </div>
 
-              {/* Coordinators */}
-              {(event.faculty || event.student) && (
-                <div className="mt-6">
-                  <h3 className="text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-blue-600" />
-                    Event Coordinators
-                  </h3>
-
-                  {event.faculty && (
-                    <div className="mb-3 p-3 bg-blue-50/60 rounded-xl border border-blue-100">
-                      <h4 className="font-medium text-blue-700 mb-1">
-                        Faculty
-                      </h4>
-                      <ul className="ml-5 list-disc space-y-1 text-gray-700 text-sm">
-                        {event.faculty.map((f, i) => (
-                          <li key={i}>
-                            <span className="font-medium">{f.name}</span>{" "}
-                            <span className="text-gray-500">– {f.phone}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {event.student && (
-                    <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100">
-                      <h4 className="font-medium text-indigo-700 mb-1">
-                        Student
-                      </h4>
-                      <ul className="ml-5 list-disc space-y-1 text-gray-700 text-sm">
-                        {event.student.map((s, i) => (
-                          <li key={i}>
-                            <span className="font-medium">{s.name}</span>{" "}
-                            <span className="text-gray-500">– {s.phone}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Accordion Section */}
-              <div className="mt-5">
-                <button
-                  onClick={() => toggleEvent(event.id)}
-                  className="flex items-center justify-between w-full text-sm font-medium text-blue-600 hover:text-blue-700"
-                >
-                  <span>
-                    {openEvent === event.id
-                      ? "Hide Details"
-                      : "View More Details"}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      openEvent === event.id ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {openEvent === event.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    transition={{ duration: 0.4 }}
-                    className="mt-4 text-sm text-gray-700 space-y-4"
+              <div className="space-y-2">
+                {[
+                  ["05 OCT", "2 events", "Treasure Hunt · Pixel Rush"],
+                  ["06 OCT", "2 events", "Techtangle · One Minute Movie"],
+                  ["07 OCT", "3 events", "Prompt Quest · CodeVerse · Security"],
+                ].map(([day, count, names], index) => (
+                  <div
+                    key={day}
+                    className="group rounded-2xl border border-white/[0.07] bg-black/10 p-3.5 transition duration-300 hover:border-white/15 hover:bg-white/[0.035]"
                   >
-                    {/* ✅ Objective */}
-                    {event.objective && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <Target className="w-4 h-4 text-blue-500" />
-                          Objective
-                        </h4>
-                        {Array.isArray(event.objective) ? (
-                          <ul className="list-disc ml-5 space-y-1">
-                            {event.objective.map((obj, i) => (
-                              <li key={i}>{obj}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="ml-5">{event.objective}</p>
-                        )}
-                      </div>
-                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-white/75">
+                        {day}
+                      </span>
+                      <span className="rounded-full bg-white/[0.05] px-2 py-1 text-[9px] font-semibold uppercase tracking-wider text-white/35">
+                        {count}
+                      </span>
+                    </div>
+                    <p className="mt-2 truncate text-[10px] text-white/25">
+                      {names}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.aside>
+        </div>
 
-                    {/* Objectives */}
-                    {event.objectives && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <Lightbulb className="w-4 h-4 text-blue-500" />
-                          Objectives
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.objectives.map((obj, i) => (
-                            <li key={i}>{obj}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+        {/* Event browser header */}
+        <div className="mt-20 border-y border-white/[0.08] py-5">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+              <p className="text-sm text-white/35">
+                Explore{" "}
+                <span className="font-semibold text-white/80">
+                  {filteredEvents.length}
+                </span>{" "}
+                {filteredEvents.length === 1 ? "experience" : "experiences"}
+              </p>
+              <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/20">
+                Choose your arena
+              </p>
+            </div>
 
-                    {/* Activity Setup */}
-                    {event.activitySetup && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <ClipboardList className="w-4 h-4 text-blue-500" />
-                          Activity Setup
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {Object.entries(event.activitySetup).map(
-                            ([key, val], i) => (
-                              <li key={i}>
-                                <strong>{key}:</strong> {val}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
+            <div className="flex max-w-full gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {categoryLabels.map((category) => {
+                const active = category === selectedCategory;
+                return (
+                  <button
+                    type="button"
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`shrink-0 cursor-pointer rounded-full border px-4 py-2.5 text-[10px] font-semibold tracking-[0.14em] transition duration-300 ${
+                      active
+                        ? "border-white/20 bg-white text-black shadow-lg shadow-white/5"
+                        : "border-white/10 bg-white/[0.025] text-white/35 hover:border-white/20 hover:bg-white/[0.05] hover:text-white/75"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
-                    {/* Rules */}
-                    {event.rules && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <ClipboardList className="w-4 h-4 text-blue-500" />
-                          Rules
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.rules.map((rule, i) => (
-                            <li key={i}>{rule}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+        {/* Event cards */}
+        <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {filteredEvents.map((event, index) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                index={index}
+                now={now}
+                onDetails={() => setSelectedEvent(event)}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
 
-                    {/* Levels */}
-                    {event.levels && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <Layers className="w-4 h-4 text-blue-500" />
-                          Levels
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.levels.map((lvl, i) => (
-                            <li key={i}>{lvl}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+        {/* Bottom registration strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]"
+        >
+          <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+            <div>
+              <p className="text-sm font-medium text-white/75">
+                Registration window
+              </p>
+              <p className="mt-1 text-xs leading-5 text-white/35">
+                All event registrations open 05 September 2026 and close 30
+                September 2026, according to the supplied event details.
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-2 rounded-2xl border border-white/[0.07] bg-black/10 px-4 py-3">
+              <CalendarDays className="h-4 w-4 text-white/30" />
+              <div>
+                <p className="text-[9px] uppercase tracking-[0.15em] text-white/25">
+                  Deadline
+                </p>
+                <p className="text-xs font-medium text-white/70">30 Sep 2026</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-                    {/* Evaluation */}
-                    {event.evaluation && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <PenTool className="w-4 h-4 text-blue-500" />
-                          Evaluation Criteria
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.evaluation.map((ev, i) => (
-                            <li key={i}>{ev}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+        <footer className="mt-14 flex flex-col gap-2 border-t border-white/[0.08] pt-6 text-[10px] uppercase tracking-[0.12em] text-white/20 sm:flex-row sm:items-center sm:justify-between">
+          <span>REVA University · CSA Tech & Media Fest 2026</span>
+          <span>School of Computer Science & Applications</span>
+        </footer>
+      </section>
 
-                    {/* How To Play */}
-                    {event.howToPlay && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <PenTool className="w-4 h-4 text-blue-500" />
-                          How to Play
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.howToPlay.map((step, i) => (
-                            <li key={i}>{step}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+      <AnimatePresence>
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            now={now}
+            onClose={() => setSelectedEvent(null)}
+          />
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}
 
-                    {/* Variations */}
-                    {event.variations && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <Lightbulb className="w-4 h-4 text-blue-500" />
-                          Variations
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.variations.map((v, i) => (
-                            <li key={i}>{v}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+function EventCard({ event, index, now, onDetails }) {
+  const countdown = getEventDate(event)
+    ? getCountdown(getEventDate(event), now)
+    : null;
 
-                    {/* Scoring */}
-                    {event.scoring && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <ClipboardList className="w-4 h-4 text-blue-500" />
-                          Scoring
-                        </h4>
-                        <ul className="list-disc ml-5 space-y-1">
-                          {event.scoring.map((sc, i) => (
-                            <li key={i}>{sc}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+  return (
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 12, scale: 0.98 }}
+      transition={{ delay: index * 0.045, duration: 0.45 }}
+      className="group relative flex min-h-[500px] flex-col overflow-hidden rounded-[2rem] border border-white/[0.09] bg-white/[0.038] p-5 shadow-2xl shadow-black/20 backdrop-blur-xl transition duration-500 hover:-translate-y-1 hover:border-white/[0.17] hover:bg-white/[0.055] sm:p-6"
+    >
+      <div
+        className={`pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-gradient-to-br ${event.accent} opacity-[0.08] blur-3xl transition duration-700 group-hover:opacity-[0.18]`}
+      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/20 to-transparent" />
 
-                    {/* Example */}
-                    {event.example && (
-                      <div>
-                        <h4 className="font-semibold mb-1 flex items-center gap-1">
-                          <BookOpen className="w-4 h-4 text-blue-500" />
-                          Example
-                        </h4>
-                        <pre className="bg-gray-100 p-3 rounded-lg text-xs overflow-x-auto whitespace-pre-wrap">
-                          {event.example}
-                        </pre>
-                      </div>
-                    )}
-                  </motion.div>
+      <div className="relative flex items-start justify-between gap-4">
+        <div
+          className={`grid h-12 w-12 place-items-center rounded-[1.1rem] bg-gradient-to-br ${event.accent} shadow-xl`}
+        >
+          <EventIcon event={event} className="h-5 w-5 text-white" />
+        </div>
+        <span className="rounded-full border border-white/10 bg-black/10 px-3 py-1.5 text-[9px] font-semibold tracking-[0.17em] text-white/35">
+          {event.category}
+        </span>
+      </div>
+
+      <div className="relative mt-9">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
+            {formatDay(event.date)}
+          </span>
+          <span className="h-px w-5 bg-white/10" />
+          <span className="font-mono text-[9px] text-white/20">
+            0{event.id}
+          </span>
+        </div>
+
+        <h2 className="max-w-[22rem] text-[1.65rem] font-semibold leading-[1.04] tracking-[-0.045em] text-white sm:text-[1.8rem]">
+          {event.title}
+        </h2>
+      </div>
+
+      <div className="relative mt-7 grid grid-cols-2 gap-2">
+        <InfoChip icon={CalendarDays} label={event.dateLabel} />
+        <InfoChip icon={Users} label={event.teamSize} />
+        <InfoChip icon={Clock3} label={event.timeLabel} />
+        <InfoChip
+          icon={Trophy}
+          label={event.fee === "NIL" ? "Free entry" : event.fee}
+        />
+      </div>
+
+      <div className="relative mt-4 rounded-2xl border border-white/[0.07] bg-white/[0.025] px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[9px] uppercase tracking-[0.16em] text-white/20">
+              Prize
+            </p>
+            <p className="mt-1 truncate text-[11px] text-white/55">
+              {event.prize || "Not specified"}
+            </p>
+          </div>
+          <Trophy className="h-4 w-4 shrink-0 text-white/20" />
+        </div>
+      </div>
+
+      <div className="relative mt-auto border-t border-white/[0.08] pt-5">
+        <div className="mb-4 flex min-h-[58px] items-center justify-between gap-4">
+          <div>
+            <p className="text-[9px] uppercase tracking-[0.17em] text-white/20">
+              {countdown
+                ? "Starts in"
+                : event.startTime
+                  ? "Status"
+                  : "Schedule"}
+            </p>
+            {event.registrationEnd && (
+              <p className="mt-1 text-[10px] text-white/30">
+                Register by {event.registrationEnd}
+              </p>
+            )}
+          </div>
+          <Countdown event={event} now={now} />
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onDetails}
+            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3.5 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white/[0.09] active:translate-y-0"
+          >
+            Explore event
+            <ArrowUpRight className="h-4 w-4 text-white/35" />
+          </button>
+
+          {event.registration ? (
+            <a
+              href={event.registration}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`grid w-12 shrink-0 cursor-pointer place-items-center rounded-2xl bg-gradient-to-br ${event.accent} text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:scale-[1.03] active:scale-100`}
+              aria-label={`Register for ${event.title}`}
+              title="Register now"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          ) : (
+            <span
+              className="grid w-12 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/[0.025] text-white/15"
+              title="Registration link not specified"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </span>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function EventModal({ event, now, onClose }) {
+  const countdown = getEventDate(event)
+    ? getCountdown(getEventDate(event), now)
+    : null;
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 backdrop-blur-xl sm:p-5"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`event-title-${event.id}`}
+        initial={{ opacity: 0, y: 24, scale: 0.975 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 14, scale: 0.985 }}
+        transition={{ type: "spring", stiffness: 280, damping: 28 }}
+        className="relative flex max-h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#0d0d11] shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2rem]"
+      >
+        {/* Modal hero */}
+        <header className="relative shrink-0 overflow-hidden border-b border-white/[0.08] px-5 py-6 sm:px-8 sm:py-8">
+          <div
+            className={`pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-gradient-to-br ${event.accent} opacity-20 blur-[80px]`}
+          />
+          <div
+            className={`pointer-events-none absolute -left-28 bottom-[-12rem] h-64 w-64 rounded-full bg-gradient-to-br ${event.accent} opacity-[0.06] blur-[80px]`}
+          />
+
+          <div className="relative flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <div
+                className={`mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${event.accent} shadow-xl`}
+              >
+                <EventIcon event={event} className="h-5 w-5" />
+              </div>
+
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-white/30">
+                  {event.category}
+                </span>
+                <span className="h-1 w-1 rounded-full bg-white/15" />
+                <span className="text-[9px] font-mono text-white/20">
+                  EVENT 0{event.id}
+                </span>
+              </div>
+
+              <h2
+                id={`event-title-${event.id}`}
+                className="max-w-2xl text-3xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-4xl lg:text-[2.8rem]"
+              >
+                {event.title}
+              </h2>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] text-white/50">
+                  {event.dateLabel}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] text-white/50">
+                  {event.timeLabel}
+                </span>
+                {event.registration && (
+                  <span className="rounded-full border border-emerald-400/10 bg-emerald-400/[0.05] px-3 py-1.5 text-[10px] text-emerald-200/60">
+                    Registration available
+                  </span>
                 )}
               </div>
             </div>
 
-            {/* Registration Button */}
-            {event.registration && (
-              <div className="border-t border-gray-100 bg-blue-50 p-4 rounded-b-3xl flex justify-end">
-                <a
-                  href={event.registration}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition-all"
-                >
-                  Register Now
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full border border-white/10 bg-white/[0.025] text-white/45 transition duration-300 hover:bg-white/10 hover:text-white"
+              aria-label="Close event details"
+              title="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* Modal content */}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="space-y-8 p-5 sm:p-8">
+            {/* Quick facts */}
+            <section>
+              <div className="mb-3 flex items-center justify-between">
+                <SectionTitle>Event overview</SectionTitle>
+                {countdown && <Countdown event={event} now={now} compact />}
               </div>
+
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                <Detail
+                  icon={CalendarDays}
+                  label="Event date"
+                  value={event.dateLabel}
+                />
+                <Detail
+                  icon={Clock3}
+                  label="Date & time"
+                  value={event.timeLabel}
+                />
+                <Detail icon={Users} label="Team size" value={event.teamSize} />
+                <Detail
+                  icon={Trophy}
+                  label="Registration fee"
+                  value={event.fee}
+                />
+                <Detail
+                  icon={CalendarDays}
+                  label="Registration opens"
+                  value="05 September 2026"
+                />
+                <Detail
+                  icon={CalendarDays}
+                  label="Registration closes"
+                  value={event.registrationEnd}
+                />
+                <Detail
+                  icon={Trophy}
+                  label="Prize"
+                  value={event.prize || "Not specified in the supplied details"}
+                />
+                <Detail
+                  icon={Clock3}
+                  label="Countdown"
+                  value={
+                    countdown
+                      ? "Live countdown to event start"
+                      : event.startTime
+                        ? "Event has started"
+                        : "Start time not specified"
+                  }
+                />
+              </div>
+            </section>
+
+            {/* Organiser */}
+            {event.organiser && (
+              <section>
+                <SectionTitle>Organiser</SectionTitle>
+                <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 sm:p-5">
+                  <p className="text-sm leading-6 text-white/60">
+                    {event.organiser}
+                  </p>
+                </div>
+              </section>
             )}
-          </motion.div>
-        ))}
-      </div>
+
+            {/* Coordinator */}
+            <section>
+              <SectionTitle>Faculty coordinator</SectionTitle>
+              <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 sm:p-5">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${event.accent}`}
+                  >
+                    <Users className="h-4 w-4" />
+                  </div>
+                  <p className="text-sm font-medium text-white/75">
+                    {event.coordinator}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Student coordinators */}
+            <section>
+              <SectionTitle>
+                Student coordinator{event.students.length > 1 ? "s" : ""}
+              </SectionTitle>
+              <div className="grid gap-2">
+                {event.students.map(([name, phone]) => (
+                  <div
+                    key={`${name}-${phone}`}
+                    className="flex items-center justify-between gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.025] px-4 py-3.5"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/[0.07] bg-white/[0.04]">
+                        <Users className="h-3.5 w-3.5 text-white/30" />
+                      </div>
+                      <span className="truncate text-sm text-white/70">
+                        {name}
+                      </span>
+                    </div>
+                    <a
+                      href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                      className="cursor-pointer whitespace-nowrap font-mono text-[11px] text-white/35 transition hover:text-white/70"
+                    >
+                      {phone}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Registration */}
+            <section className="rounded-[1.6rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-medium text-white/75">
+                    Ready to participate?
+                  </p>
+                  <p className="mt-1 max-w-md text-xs leading-5 text-white/30">
+                    Registration closes on {event.registrationEnd}. Use the
+                    official registration form provided for this event.
+                  </p>
+                </div>
+
+                {event.registration ? (
+                  <a
+                    href={event.registration}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-gradient-to-r ${event.accent} px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl`}
+                  >
+                    Register now
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-3.5 text-sm text-white/30">
+                    Registration link not specified
+                  </span>
+                )}
+              </div>
+            </section>
+
+            {/* Source completeness note */}
+            <p className="text-center text-[10px] leading-5 text-white/15">
+              Event information shown here reflects the supplied Techfusion
+              event details. Fields not specified in that source are
+              intentionally marked as not specified.
+            </p>
+          </div>
+        </div>
+
+        {/* Modal footer */}
+        <footer className="shrink-0 border-t border-white/[0.08] bg-[#0d0d11]/95 p-3 sm:px-5">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full cursor-pointer rounded-xl border border-white/[0.08] bg-white/[0.025] px-4 py-3 text-xs font-medium text-white/45 transition duration-300 hover:bg-white/[0.06] hover:text-white"
+          >
+            Close event details
+          </button>
+        </footer>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function HeroStat({ value, label }) {
+  return (
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.025] px-4 py-3">
+      <p className="font-mono text-sm font-semibold text-white/75">{value}</p>
+      <p className="mt-0.5 text-[9px] uppercase tracking-[0.16em] text-white/20">
+        {label}
+      </p>
     </div>
+  );
+}
+
+function InfoChip({ icon: Icon, label }) {
+  return (
+    <div className="flex min-h-[54px] items-center gap-2.5 rounded-2xl border border-white/[0.07] bg-black/10 px-3.5 py-2.5">
+      <Icon className="h-3.5 w-3.5 shrink-0 text-white/20" />
+      <span className="line-clamp-2 text-[10px] leading-4 text-white/45">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function Detail({ icon: Icon, label, value }) {
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 transition duration-300 hover:border-white/[0.12] hover:bg-white/[0.04]">
+      <div className="mb-2 flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.17em] text-white/22">
+        <Icon className="h-3.5 w-3.5" />
+        {label}
+      </div>
+      <p className="text-sm leading-5 text-white/70">{value}</p>
+    </div>
+  );
+}
+
+function SectionTitle({ children }) {
+  return (
+    <h4 className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/25">
+      <span className="h-px w-5 bg-white/15" />
+      {children}
+    </h4>
   );
 }
