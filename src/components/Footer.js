@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -5,42 +6,53 @@ import {
   FaLinkedinIn,
   FaTwitter,
   FaGlobe,
-  FaPhoneAlt,
 } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-10">
-      <div className="max-w-6xl mx-auto px-4 grid gap-8 md:grid-cols-3 text-sm">
+    <footer className="bg-gray-900 text-gray-300 py-12 px-4 border-t border-gray-800 text-sm">
+      <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-3">
         {/* University Info */}
         <div>
-          <h2 className="text-lg font-bold mb-2">REVA UNIVERSITY</h2>
-          <p>Bengaluru, India</p>
-          <p>Rukmini Knowledge Park, Kattigenahalli</p>
-          <p>Yelahanka, Bengaluru - 560 064</p>
-          <p>Karnataka, India</p>
-          <p className="mt-2">
-            <strong>Ph:</strong> +91-90211 90211, +91 80 4696 6966
+          <h2 className="text-white font-bold text-base mb-3 tracking-wide">
+            REVA UNIVERSITY
+          </h2>
+          <p className="text-gray-400 leading-relaxed text-xs sm:text-sm">
+            Bengaluru, India
+            <br />
+            Rukmini Knowledge Park, Kattigenahalli
+            <br />
+            Yelahanka, Bengaluru - 560 064
+            <br />
+            Karnataka, India
           </p>
-          <p>
-            <strong>Email:</strong>{" "}
-            <a href="mailto:admissions@reva.edu.in" className="underline">
+          <p className="mt-3 text-xs sm:text-sm text-gray-400">
+            <strong className="text-gray-300">Ph:</strong> +91-90211 90211, +91
+            80 4696 6966
+          </p>
+          <p className="text-xs sm:text-sm text-gray-400 mt-1">
+            <strong className="text-gray-300">Email:</strong>{" "}
+            <a
+              href="mailto:admissions@reva.edu.in"
+              className="text-orange-400 hover:underline"
+            >
               admissions@reva.edu.in
             </a>
           </p>
         </div>
 
         {/* Links and Branding */}
-        <div className="flex flex-col items-center md:items-start">
-          <p className="text-lg font-semibold mb-2 text-orange-400">
+        <div className="flex flex-col items-start md:items-start">
+          <p className="text-white font-semibold mb-3 tracking-wide">
             Follow us on
           </p>
-          <div className="flex gap-4 text-xl">
+          <div className="flex gap-4 text-lg text-gray-400 mb-4">
             <a
               href="https://www.instagram.com/revauniversity_official"
               aria-label="Instagram"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
               <FaInstagram />
             </a>
@@ -49,6 +61,7 @@ const Footer = () => {
               aria-label="Facebook"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
               <FaFacebookF />
             </a>
@@ -57,6 +70,7 @@ const Footer = () => {
               aria-label="YouTube"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
               <FaYoutube />
             </a>
@@ -65,6 +79,7 @@ const Footer = () => {
               aria-label="LinkedIn"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
               <FaLinkedinIn />
             </a>
@@ -73,15 +88,16 @@ const Footer = () => {
               aria-label="X (Twitter)"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
               <FaTwitter />
             </a>
           </div>
-          <div className="flex items-center gap-2 mt-3">
-            <FaGlobe />
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+            <FaGlobe className="text-gray-500" />
             <a
               href="https://www.reva.edu.in"
-              className="underline"
+              className="text-orange-400 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -91,12 +107,18 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="text-center md:text-right">
-          <p>&copy; {new Date().getFullYear()} REVA University</p>
-          <p>CSAConnect</p>
-          <div className="flex justify-center md:justify-end gap-2 mt-2">
-            <FaPhoneAlt />
-            <span>+91 90211 90211</span>
+        <div className="flex flex-col items-start md:items-end justify-between text-left md:text-right">
+          <div>
+            <p className="text-white font-semibold">CSAConnect</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              School of Computer Science & Applications
+            </p>
+          </div>
+          <div className="text-xs text-gray-500 mt-6 md:mt-0">
+            <p>
+              &copy; {new Date().getFullYear()} REVA University. All rights
+              reserved.
+            </p>
           </div>
         </div>
       </div>
